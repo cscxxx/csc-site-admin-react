@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
@@ -22,6 +25,8 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
     "@eslint/js": "^9.39.1",
     "@tailwindcss/vite": "^4.1.18",
     "@types/mockjs": "^1.0.10",
@@ -29,6 +34,8 @@
     "@types/numeral": "^2.0.5",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
     "vite-plugin-mock": "^3.0.0",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
