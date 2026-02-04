@@ -1,0 +1,54 @@
+@import '../styles/variables.less';
+
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: @text-color-light-solid;
+  height: @header-height;
+  padding-inline: 50px;
+  background-color: @primary-color;
+}
+
+.headerTitle {
+  font-size: @font-size-xl;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.titleWord {
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.titleSpace {
+  display: inline-block;
+  width: 0.5em;
+}
+
+.sider {
+  background-color: @bg-container;
+}
+
+.content {
+  margin: @spacing-lg @spacing-md;
+  padding: @spacing-lg;
+  min-height: @content-min-height;
+  background-color: @bg-container;
+}
+
+.footer {
+  text-align: center;
+  color: @text-color-light-solid;
+  background-color: @primary-color;
+}
+
+.menu {
+  height: 100%;
+  border-right: 0;
+}

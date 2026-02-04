@@ -1,0 +1,68 @@
+@import '../../styles/variables.less';
+
+.pageContainer {
+  padding: @spacing-lg;
+}
+
+.pageTitle {
+  margin-bottom: @spacing-lg;
+  font-size: @font-size-xl;
+  font-weight: bold;
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: @spacing-lg;
+  grid-template-areas:
+    'api api'
+    'params response';
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'api'
+      'params'
+      'response';
+  }
+}
+
+.apiCard {
+  grid-area: api;
+}
+
+.paramsCard {
+  grid-area: params;
+}
+
+.responseCard {
+  grid-area: response;
+}
+
+.emptyState {
+  text-align: center;
+  color: @text-color-secondary;
+  padding: @spacing-xl;
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.jsonPreview {
+  background: @bg-layout;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: @border-radius-md;
+  padding: @spacing-md;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: 500px;
+  overflow-y: auto;
+  margin: 0;
+}

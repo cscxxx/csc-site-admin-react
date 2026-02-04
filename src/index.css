@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Tailwind CSS v4 配置 - 使用 CSS-first 方式 */
+/* 注意：Tailwind v4 默认启用 preflight，如果需要禁用，可以通过 CSS 层覆盖 */
+
+/* 全局样式 */
+:root {
+  /* 主题 */
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
