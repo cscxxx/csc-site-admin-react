@@ -10,6 +10,7 @@ const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const Users = lazy(() => import('@/pages/Users'));
 const Settings = lazy(() => import('@/pages/Settings'));
 const Mock = lazy(() => import('@/pages/Mock'));
+const Performance = lazy(() => import('@/pages/Performance'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: 'mock',
         element: <LazyRoute component={Mock} />,
+      },
+      {
+        path: 'performance',
+        element: <LazyRoute component={Performance} />,
       },
     ],
   },

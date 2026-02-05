@@ -324,7 +324,9 @@ function Mock() {
         <Card title="响应结果" className={styles.responseCard}>
           {loading ? (
             <div className={styles.loadingWrapper}>
-              <Spin size="large" tip="请求中..." />
+              <Spin size="large" tip="请求中...">
+                <div style={{ minHeight: '200px' }} />
+              </Spin>
             </div>
           ) : responseData ? (
             <div>

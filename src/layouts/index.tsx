@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Layout, Menu, Button, Space } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { DashboardOutlined, UserOutlined, SettingOutlined, ApiOutlined, LogoutOutlined } from '@ant-design/icons';
+import { DashboardOutlined, UserOutlined, SettingOutlined, ApiOutlined, BarChartOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useAuthStore } from '@/store';
 import { useTitleAnimation } from './use-anime';
 import styles from './index.module.less';
@@ -47,6 +47,11 @@ function AppLayout() {
       key: '/mock',
       icon: <ApiOutlined />,
       label: 'Mock 数据',
+    },
+    {
+      key: '/performance',
+      icon: <BarChartOutlined />,
+      label: '性能监控',
     },
   ];
 

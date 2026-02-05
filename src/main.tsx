@@ -9,9 +9,18 @@ import './index.css'
 import App from './App.tsx'
 import { themeConfig } from './config/theme'
 import { initGlobalErrorHandler } from './utils/error/globalHandler'
+import { initWebVitals } from './utils/performance/vitals'
+import { usePerformanceStore } from './store'
 
 // 初始化全局错误监听
 initGlobalErrorHandler()
+
+// 初始化性能监控
+initWebVitals((metrics) => {
+  usePerformanceStore.getState().updateMetrics(metrics)
+  // 只在指标更新时刷新历史记录，避免频繁读取 localStorage
+  // refreshHistory 会在需要时由组件主动调用
+})
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
