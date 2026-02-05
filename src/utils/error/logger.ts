@@ -9,7 +9,7 @@ import type { ErrorInfo } from './types';
  * 错误日志存储键名
  */
 const ERROR_LOG_KEY = 'app_error_logs';
-const MAX_LOG_COUNT = 50; // 最多保存 50 条错误日志
+const MAX_LOG_COUNT = 500; // 最多保存 50 条错误日志
 
 /**
  * 格式化错误信息
