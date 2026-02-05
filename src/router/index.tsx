@@ -1,18 +1,26 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import AppLayout from '../layouts';
-import ProtectedRoute from '../components/ProtectedRoute';
-import Login from '../pages/Login';
-import Dashboard from '../pages/Dashboard';
-import Users from '../pages/Users';
-import Settings from '../pages/Settings';
-import Mock from '../pages/Mock';
-import NotFound from '../pages/NotFound';
+import AppLayout from '@/layouts';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import LazyRoute, { LoadingFallback } from '@/components/LazyRoute';
+
+// 路由懒加载：使用 React.lazy 动态导入页面组件
+const Login = lazy(() => import('@/pages/Login'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Users = lazy(() => import('@/pages/Users'));
+const Settings = lazy(() => import('@/pages/Settings'));
+const Mock = lazy(() => import('@/pages/Mock'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
   // 公开路由：登录页面，无需登录验证
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Login />
+      </Suspense>
+    ),
   },
   // 受保护路由：所有需要登录的页面都在此路由下
   {
@@ -29,25 +37,29 @@ export const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: <LazyRoute component={Dashboard} />,
       },
       {
         path: 'users',
-        element: <Users />,
+        element: <LazyRoute component={Users} />,
       },
       {
         path: 'settings',
-        element: <Settings />,
+        element: <LazyRoute component={Settings} />,
       },
       {
         path: 'mock',
-        element: <Mock />,
+        element: <LazyRoute component={Mock} />,
       },
     ],
   },
   // 公开路由：404 页面，无需登录验证
   {
     path: '*',
-    element: <NotFound />,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ]);

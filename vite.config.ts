@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-// @ts-expect-error - vite-plugin-mock 类型定义可能不完整
+import path from 'path'
 import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vite.dev/config/
@@ -19,4 +19,9 @@ export default defineConfig({
       logger: true,
     }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 })

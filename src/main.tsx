@@ -8,6 +8,10 @@ import './config/numeral' // 初始化 Numeral 配置，设置中文语言
 import './index.css'
 import App from './App.tsx'
 import { themeConfig } from './config/theme'
+import { initGlobalErrorHandler } from './utils/error/globalHandler'
+
+// 初始化全局错误监听
+initGlobalErrorHandler()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

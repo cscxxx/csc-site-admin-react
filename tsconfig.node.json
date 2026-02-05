@@ -1,26 +1,61 @@
 {
+  // TypeScript Node.js 配置文件
+  // 用于配置 Node.js 环境下的 TypeScript 文件（如 vite.config.ts）
   "compilerOptions": {
+    // 类型检查信息输出文件路径
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    
+    // 编译目标：ES2023 标准（Node.js 环境支持更新的标准）
     "target": "ES2023",
+    
+    // 包含的类型库：ES2023
     "lib": ["ES2023"],
+    
+    // 模块系统：ESNext（使用最新的 ES 模块标准）
     "module": "ESNext",
+    
+    // 包含 Node.js 类型定义
     "types": ["node"],
+    
+    // 跳过类型库的类型检查（加快编译速度）
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* ========== 打包器模式配置 ========== */
+    // 模块解析策略：使用打包器模式（适用于 Vite）
     "moduleResolution": "bundler",
+    
+    // 允许导入 TypeScript 扩展名（.ts, .tsx）
     "allowImportingTsExtensions": true,
+    
+    // 保持模块语法的字面意思（不进行转换）
     "verbatimModuleSyntax": true,
+    
+    // 强制检测模块（自动识别 ES 模块和 CommonJS 模块）
     "moduleDetection": "force",
+    
+    // 不输出编译后的文件（由 Vite 处理）
     "noEmit": true,
 
-    /* Linting */
+    /* ========== 代码检查配置 ========== */
+    // 启用所有严格类型检查
     "strict": true,
+    
+    // 检查未使用的局部变量
     "noUnusedLocals": true,
+    
+    // 检查未使用的函数参数
     "noUnusedParameters": true,
+    
+    // 仅允许可擦除的语法（确保类型可以完全移除）
     "erasableSyntaxOnly": true,
+    
+    // 检查 switch 语句中是否有遗漏的 case
     "noFallthroughCasesInSwitch": true,
+    
+    // 检查未检查的副作用导入
     "noUncheckedSideEffectImports": true
   },
+  
+  // 包含的文件：Vite 配置文件
   "include": ["vite.config.ts"]
 }

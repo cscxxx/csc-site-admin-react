@@ -1,7 +1,16 @@
 {
+  // TypeScript 主配置文件
+  // 这是一个项目引用配置，用于管理多个子配置文件
+  // 不直接包含编译选项，而是通过引用其他配置文件来组织项目结构
+  
+  // 不包含任何源文件（由子配置管理）
   "files": [],
+  
+  // 项目引用：引用应用配置和 Node.js 配置
   "references": [
+    // 应用源代码配置（React 应用）
     { "path": "./tsconfig.app.json" },
+    // Node.js 工具配置（如 vite.config.ts）
     { "path": "./tsconfig.node.json" }
   ]
 }

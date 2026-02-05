@@ -20,6 +20,7 @@ import {
 } from './interceptors';
 
 import type { MockConfig } from '../../mock/utils';
+import { createRequestErrorInterceptor } from './errorHandler';
 
 // Mock 拦截器（仅在启用时导入）
 let mockConfigs: MockConfig[] | null = null;
@@ -87,14 +88,14 @@ function matchMockConfig(
 /**
  * 执行 Mock 响应
  */
-async function executeMockResponse(
+async function executeMockResponse<T = unknown>(
   config: MockConfig,
   url: string,
   method: string,
   body: unknown,
   query: Record<string, unknown>,
   headers: Record<string, unknown>
-): Promise<ResponseData> {
+): Promise<ResponseData<T>> {
   // 解析查询参数
   const urlObj = new URL(url, window.location.origin);
   const queryParams: Record<string, unknown> = {};
@@ -118,7 +119,7 @@ async function executeMockResponse(
 
   // 构建响应对象
   return {
-    data: responseData,
+    data: responseData as T,
     status: config.statusCode || 200,
     statusText: 'OK',
     headers: new Headers({
@@ -332,7 +333,7 @@ class Request {
 
         if (mockConfig) {
           try {
-            const mockResponse = await executeMockResponse(
+            const mockResponse = await executeMockResponse<T>(
               mockConfig,
               fullURL,
               finalConfig.method || 'GET',
@@ -623,6 +624,9 @@ export function createRequest(config?: RequestConfig): Request {
  * });
  */
 const request = new Request();
+
+// 添加默认的错误拦截器，统一处理请求错误
+request.interceptors.error.use(createRequestErrorInterceptor());
 
 export default request;
 export { Request };

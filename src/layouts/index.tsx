@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Layout, Menu, Button, Space } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { DashboardOutlined, UserOutlined, SettingOutlined, ApiOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '@/store';
 import { useTitleAnimation } from './use-anime';
 import styles from './index.module.less';
 
