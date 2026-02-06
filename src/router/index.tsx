@@ -1,3 +1,20 @@
+/**
+ * 路由配置
+ * 
+ * 使用 React Router DOM v7 的 createBrowserRouter 创建路由
+ * 
+ * 路由结构：
+ * - 公开路由：/login（登录页面）、*（404 页面）
+ * - 受保护路由：所有需要登录的页面都在 / 路由下，使用 ProtectedRoute 组件进行认证检查
+ * 
+ * 路由特性：
+ * - 使用 React.lazy 进行代码分割和懒加载
+ * - 受保护路由使用 LazyRoute 组件包装，提供加载状态和过渡动画
+ * - 默认路由（/）重定向到 /dashboard
+ * 
+ * @module router
+ */
+
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AppLayout from '@/layouts';

@@ -39,6 +39,9 @@ const THRESHOLDS: Record<string, { good: number; poor: number }> = {
 
 /**
  * 评估指标评级
+ * @param name - 指标名称（LCP、INP、CLS、FCP、TTFB）
+ * @param value - 指标值
+ * @returns 评级结果：'good' | 'needs-improvement' | 'poor'
  */
 function getRating(name: string, value: number): 'good' | 'needs-improvement' | 'poor' {
   const threshold = THRESHOLDS[name];
@@ -51,6 +54,8 @@ function getRating(name: string, value: number): 'good' | 'needs-improvement' | 
 
 /**
  * 格式化指标数据
+ * @param metric - Web Vitals 原始指标数据
+ * @returns 格式化后的指标数据，包含评级和时间戳
  */
 function formatMetric(metric: Metric): VitalMetric {
   return {
@@ -71,6 +76,8 @@ const MAX_RECORDS = 50;
 
 /**
  * 保存性能数据到 localStorage
+ * @param metrics - 性能指标数据对象
+ * @remarks 最多保存 MAX_RECORDS 条记录，超出部分会被删除
  */
 export function savePerformanceRecord(metrics: Record<string, VitalMetric>): void {
   try {
@@ -91,6 +98,8 @@ export function savePerformanceRecord(metrics: Record<string, VitalMetric>): voi
 
 /**
  * 获取历史性能数据
+ * @returns 历史性能记录数组，如果获取失败或不存在则返回空数组
+ * @remarks 会自动为旧数据（没有 id）生成唯一 ID 并迁移
  */
 export function getPerformanceHistory(): PerformanceRecord[] {
   try {
@@ -116,6 +125,7 @@ export function getPerformanceHistory(): PerformanceRecord[] {
 
 /**
  * 清除历史性能数据
+ * @remarks 从 localStorage 中删除所有历史性能记录
  */
 export function clearPerformanceHistory(): void {
   try {
@@ -182,6 +192,26 @@ function onMetricReport(metric: Metric): void {
 
 /**
  * 初始化 Web Vitals 监控
+ * 
+ * 开始收集 Core Web Vitals 指标：
+ * - LCP (Largest Contentful Paint)
+ * - INP (Interaction to Next Paint)
+ * - CLS (Cumulative Layout Shift)
+ * - FCP (First Contentful Paint)
+ * - TTFB (Time to First Byte)
+ * 
+ * @param onReport - 指标更新回调函数（可选），当指标更新时会调用此函数
+ * @remarks 
+ * - 使用防抖机制避免频繁触发回调
+ * - 当收集到至少 3 个指标时会自动保存记录
+ * - 应在应用启动时调用（main.tsx）
+ * 
+ * @example
+ * ```typescript
+ * initWebVitals((metrics) => {
+ *   console.log('性能指标更新:', metrics);
+ * });
+ * ```
  */
 export function initWebVitals(onReport?: (metrics: Record<string, VitalMetric>) => void): void {
   // 重置当前指标
@@ -203,7 +233,9 @@ export function initWebVitals(onReport?: (metrics: Record<string, VitalMetric>) 
 }
 
 /**
- * 获取当前指标
+ * 获取当前收集到的性能指标
+ * @returns 当前性能指标数据对象的副本
+ * @remarks 返回的是副本，修改返回值不会影响原始数据
  */
 export function getCurrentMetrics(): Record<string, VitalMetric> {
   return { ...currentMetrics };

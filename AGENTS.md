@@ -10,6 +10,23 @@
 4. 使用 Less 模块化样式
 5. 遵循 Conventional Commits 提交规范
 
+## 项目架构
+
+详细的项目结构、API 规范、代码模式等信息请参考：
+
+- **项目结构**: `.cursor/context/project-structure.md` - 完整的目录结构和文件组织说明
+- **API 规范**: `.cursor/context/api.md` - API 接口规范和请求工具使用指南
+- **代码模式**: `.cursor/patterns/` - 创建页面、服务、Store 的标准模式
+- **代码示例**: `.cursor/examples/` - 完整的代码示例参考
+
+### 关键文件
+
+- **类型定义**: `src/types/index.ts` - 统一导出所有类型定义
+- **请求工具**: `src/utils/request/index.ts` - 基于 fetch 封装的请求工具
+- **路由配置**: `src/router/index.tsx` - React Router DOM v7 路由配置
+- **认证状态**: `src/store/authStore.ts` - Zustand 认证状态管理
+- **布局组件**: `src/layouts/index.tsx` - 主布局组件
+
 ## 项目规则
 
 详细规则请参考 `.cursor/rules/` 目录下的分类文件：

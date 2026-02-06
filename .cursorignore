@@ -1,0 +1,32 @@
+# 依赖和构建产物
+node_modules/
+dist/
+build/
+.tmp/
+*.tsbuildinfo
+
+# 日志文件
+*.log
+pnpm-debug.log*
+
+# 锁文件（不需要 AI 分析）
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Husky 内部文件
+.husky/_/
+
+# 测试覆盖率
+coverage/
+.nyc_output/

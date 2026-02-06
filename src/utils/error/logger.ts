@@ -13,6 +13,9 @@ const MAX_LOG_COUNT = 500; // 最多保存 50 条错误日志
 
 /**
  * 格式化错误信息
+ * @param error - 错误对象
+ * @param errorInfo - React 错误信息（可选，用于 React 错误边界）
+ * @returns 格式化后的错误信息对象
  */
 export function formatError(error: Error, errorInfo?: React.ErrorInfo): ErrorInfo {
   return {
@@ -28,6 +31,7 @@ export function formatError(error: Error, errorInfo?: React.ErrorInfo): ErrorInf
 
 /**
  * 记录错误到控制台（开发环境）
+ * @param errorInfo - 错误信息对象
  */
 export function logErrorToConsole(errorInfo: ErrorInfo): void {
   if (import.meta.env.DEV) {
@@ -47,6 +51,8 @@ export function logErrorToConsole(errorInfo: ErrorInfo): void {
 
 /**
  * 保存错误到本地存储
+ * @param errorInfo - 错误信息对象
+ * @remarks 最多保存 MAX_LOG_COUNT 条错误日志，超出部分会被删除
  */
 export function saveErrorToLocal(errorInfo: ErrorInfo): void {
   try {
@@ -61,6 +67,7 @@ export function saveErrorToLocal(errorInfo: ErrorInfo): void {
 
 /**
  * 从本地存储获取错误日志
+ * @returns 错误日志数组，如果获取失败或不存在则返回空数组
  */
 export function getErrorsFromLocal(): ErrorInfo[] {
   try {
@@ -84,6 +91,8 @@ export function clearErrorLogs(): void {
 
 /**
  * 上报错误到服务器（预留接口，可扩展）
+ * @param errorInfo - 错误信息对象
+ * @remarks 目前仅在开发环境记录到控制台，可扩展为实际上报到错误监控服务
  */
 export async function reportError(errorInfo: ErrorInfo): Promise<void> {
   // 这里可以扩展为实际上报到错误监控服务（如 Sentry）
@@ -106,6 +115,11 @@ export async function reportError(errorInfo: ErrorInfo): Promise<void> {
 
 /**
  * 处理错误的主函数
+ * 统一处理错误的格式化、记录和上报
+ * @param error - 错误对象
+ * @param errorInfo - React 错误信息（可选）
+ * @param errorType - 错误类型，默认为 'unknown'
+ * @remarks 会依次执行：格式化错误、记录到控制台、保存到本地存储、上报错误
  */
 export async function handleError(
   error: Error,
