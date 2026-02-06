@@ -11,7 +11,10 @@ import type { MockResponse } from '@/types';
  * @param message 响应消息
  * @returns 标准响应格式
  */
-export function successResponse<T = unknown>(data: T, message: string = '操作成功'): MockResponse<T> {
+export function successResponse<T = unknown>(
+  data: T,
+  message: string = '操作成功'
+): MockResponse<T> {
   return {
     code: 200,
     message,
@@ -25,7 +28,10 @@ export function successResponse<T = unknown>(data: T, message: string = '操作�
  * @param code 错误码，默认 400
  * @returns 标准错误响应格式
  */
-export function errorResponse(message: string = '操作失败', code: number = 400): MockResponse<null> {
+export function errorResponse(
+  message: string = '操作失败',
+  code: number = 400
+): MockResponse<null> {
   return {
     code,
     message,
@@ -66,7 +72,7 @@ export function pageResponse<T = unknown>(
  * @returns Promise
  */
 export function delay(ms: number = 300): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // MockConfig 类型已统一到 @/types/mock.ts，重新导出以保持向后兼容

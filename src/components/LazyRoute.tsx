@@ -5,8 +5,15 @@ import RouteTransition from './RouteTransition';
 // 加载中占位组件
 function LoadingFallback() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-      <Spin size="large" >
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '400px',
+      }}
+    >
+      <Spin size="large">
         <div style={{ minHeight: '200px' }} />
       </Spin>
     </div>

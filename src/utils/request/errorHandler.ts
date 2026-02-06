@@ -11,10 +11,10 @@ import type { ResponseData } from '@/types';
  */
 export function handleHttpError(response: ResponseData): void {
   const { status, statusText } = response;
-  
+
   // 根据状态码创建错误信息
   let errorMessage = `请求失败: ${statusText || '未知错误'}`;
-  
+
   if (status >= 500) {
     errorMessage = '服务器错误，请稍后重试';
   } else if (status === 404) {
@@ -29,7 +29,7 @@ export function handleHttpError(response: ResponseData): void {
 
   const error = new Error(errorMessage);
   (error as Error & { status?: number }).status = status;
-  
+
   handleError(error, undefined, 'network');
 }
 

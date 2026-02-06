@@ -13,8 +13,8 @@ interface UserState {
   clearUserInfo: () => void;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>(set => ({
   userInfo: null,
-  setUserInfo: (userInfo) => set({ userInfo }),
+  setUserInfo: userInfo => set({ userInfo }),
   clearUserInfo: () => set({ userInfo: null }),
 }));

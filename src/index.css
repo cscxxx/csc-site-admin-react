@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tailwind CSS v4 配置 - 使用 CSS-first 方式 */
 /* 注意：Tailwind v4 默认启用 preflight，如果需要禁用，可以通过 CSS 层覆盖 */

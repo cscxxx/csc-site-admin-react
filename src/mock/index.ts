@@ -9,12 +9,7 @@ import dashboardMocks from './modules/dashboard';
 import commonMocks from './modules/common';
 
 // 合并所有 mock 配置
-const mockConfigs: MockConfig[] = [
-  ...authMocks,
-  ...userMocks,
-  ...dashboardMocks,
-  ...commonMocks,
-];
+const mockConfigs: MockConfig[] = [...authMocks, ...userMocks, ...dashboardMocks, ...commonMocks];
 
 export default mockConfigs;
 

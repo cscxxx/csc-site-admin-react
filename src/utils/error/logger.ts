@@ -100,7 +100,7 @@ export async function reportError(errorInfo: ErrorInfo): Promise<void> {
   if (import.meta.env.DEV) {
     console.log('错误上报（开发环境）:', errorInfo);
   }
-  
+
   // 示例：可以在这里添加实际上报逻辑
   // try {
   //   await fetch('/api/errors', {

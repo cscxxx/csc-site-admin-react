@@ -9,7 +9,7 @@ import type { ThemeConfig } from 'antd';
 export const themeConfig: ThemeConfig = {
   // 使用 Ant Design 官网默认算法
   algorithm: theme.defaultAlgorithm,
-  
+
   // Ant Design 官网默认的设计令牌配置
   token: {
     // 主色：Ant Design 官网默认蓝色
@@ -23,7 +23,7 @@ export const themeConfig: ThemeConfig = {
     // 其他官网推荐的默认配置
     wireframe: false, // 使用实心样式（官网默认）
   },
-  
+
   // 组件级别的主题定制（使用官网默认配置）
   components: {
     // Button 组件使用官网默认配置

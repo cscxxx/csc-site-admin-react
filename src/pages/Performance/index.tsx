@@ -3,7 +3,11 @@ import { Card, Row, Col, Statistic, Tag, Button, Space, Table, App, Descriptions
 import { ReloadOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { usePerformanceStore } from '@/store';
-import { initWebVitals, getCurrentMetrics, clearPerformanceHistory } from '@/utils/performance/vitals';
+import {
+  initWebVitals,
+  getCurrentMetrics,
+  clearPerformanceHistory,
+} from '@/utils/performance/vitals';
 import type { PerformanceRecord } from '@/types';
 import { formatNumber } from '@/utils/formatNumber';
 import { COLORS } from '@/styles/constants';
@@ -102,7 +106,8 @@ function formatMetricValue(name: string, value: number): string {
 
 function Performance() {
   const { message } = App.useApp();
-  const { currentMetrics, history, updateMetrics, refreshHistory, clearHistory } = usePerformanceStore();
+  const { currentMetrics, history, updateMetrics, refreshHistory, clearHistory } =
+    usePerformanceStore();
 
   // 刷新当前指标
   const handleRefresh = () => {
@@ -125,7 +130,7 @@ function Performance() {
     refreshHistory();
 
     if (Object.keys(currentMetrics).length === 0) {
-      initWebVitals((metrics) => {
+      initWebVitals(metrics => {
         updateMetrics(metrics);
         // 指标更新后刷新历史记录
         refreshHistory();
@@ -222,7 +227,7 @@ function Performance() {
   // 获取当前指标卡片数据
   const getMetricCards = () => {
     const metrics = ['LCP', 'INP', 'CLS', 'FCP', 'TTFB'] as const;
-    return metrics.map((name) => {
+    return metrics.map(name => {
       const metric = currentMetrics[name];
       const info = METRIC_INFO[name];
       const hasMetric = !!metric;
@@ -257,11 +262,11 @@ function Performance() {
                 },
                 ...(hasMetric
                   ? [
-                    {
-                      label: '阈值',
-                      children: `好: ≤${formatMetricValue(name, info.thresholds.good)}, 差: >${formatMetricValue(name, info.thresholds.poor)}`,
-                    },
-                  ]
+                      {
+                        label: '阈值',
+                        children: `好: ≤${formatMetricValue(name, info.thresholds.good)}, 差: >${formatMetricValue(name, info.thresholds.poor)}`,
+                      },
+                    ]
                   : []),
               ]}
             />

@@ -1,9 +1,9 @@
 /**
  * 拦截器相关实现
- * 
+ *
  * 提供请求拦截器、响应拦截器和错误拦截器的管理功能
  * 支持拦截器的添加、移除和执行
- * 
+ *
  * @module utils/request/interceptors
  */
 
@@ -17,12 +17,12 @@ import type {
 
 /**
  * 拦截器管理器
- * 
+ *
  * 用于管理请求拦截器、响应拦截器和错误拦截器
  * 支持拦截器的添加、移除和批量获取
- * 
+ *
  * @template T - 拦截器函数类型
- * 
+ *
  * @example
  * ```typescript
  * const manager = new InterceptorManager<RequestInterceptor>();
@@ -69,7 +69,7 @@ export class InterceptorManager<T> {
 
 /**
  * 拦截器集合接口
- * 
+ *
  * 包含三种类型的拦截器管理器：
  * - request: 请求拦截器（在发送请求前执行）
  * - response: 响应拦截器（在收到响应后执行）
@@ -83,9 +83,9 @@ export interface Interceptors {
 
 /**
  * 执行请求拦截器
- * 
+ *
  * 按顺序执行所有请求拦截器，每个拦截器可以修改请求配置
- * 
+ *
  * @param config - 初始请求配置
  * @param interceptors - 拦截器管理器集合
  * @returns 经过所有拦截器处理后的最终配置
@@ -107,9 +107,9 @@ export async function applyRequestInterceptors(
 
 /**
  * 执行响应拦截器
- * 
+ *
  * 按顺序执行所有响应拦截器，每个拦截器可以修改响应数据
- * 
+ *
  * @param response - 原始响应数据
  * @param interceptors - 拦截器管理器集合
  * @returns 经过所有拦截器处理后的最终响应数据
@@ -131,12 +131,12 @@ export async function applyResponseInterceptors<T>(
 
 /**
  * 执行错误拦截器
- * 
+ *
  * 按顺序执行所有错误拦截器，用于统一处理请求错误
- * 
+ *
  * @param error - 错误对象
  * @param interceptors - 拦截器管理器集合
- * @remarks 
+ * @remarks
  * - 所有错误拦截器都会被执行，即使某个拦截器抛出异常
  * - 错误拦截器通常用于错误日志记录、错误上报等
  */

@@ -18,11 +18,11 @@ interface PerformanceState {
   clearHistory: () => void;
 }
 
-export const usePerformanceStore = create<PerformanceState>((set) => ({
+export const usePerformanceStore = create<PerformanceState>(set => ({
   currentMetrics: {},
   history: getPerformanceHistory(),
 
-  updateMetrics: (metrics) => {
+  updateMetrics: metrics => {
     set({ currentMetrics: metrics });
   },
 

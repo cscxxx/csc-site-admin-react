@@ -40,15 +40,17 @@ const myMocks: MockConfig[] = [
     method: 'get',
     response: async ({ query }) => {
       await delay(300); // 模拟网络延迟
-      
+
       return successResponse({
         data: Mock.mock({
-          'list|10': [{
-            'id|+1': 1,
-            'name': '@cname',
-            'email': '@email',
-          }]
-        })
+          'list|10': [
+            {
+              'id|+1': 1,
+              name: '@cname',
+              email: '@email',
+            },
+          ],
+        }),
       });
     },
   },
@@ -86,12 +88,12 @@ interface MockConfig {
 
 ```typescript
 response: (options: {
-  url: string;                    // 完整请求 URL
-  method: string;                 // HTTP 方法
-  body: any;                      // 请求体（POST/PUT 等）
-  query: Record<string, any>;     // 查询参数
-  headers: Record<string, any>;   // 请求头
-}) => any
+  url: string; // 完整请求 URL
+  method: string; // HTTP 方法
+  body: any; // 请求体（POST/PUT 等）
+  query: Record<string, any>; // 查询参数
+  headers: Record<string, any>; // 请求头
+}) => any;
 ```
 
 ## 工具函数
@@ -113,38 +115,41 @@ Mock.js 提供了丰富的数据生成语法，常用示例：
 ```typescript
 Mock.mock({
   // 字符串
-  'name': '@cname',              // 中文姓名
-  'email': '@email',             // 邮箱
-  'url': '@url',                 // URL
-  'word': '@word',               // 单词
-  
+  name: '@cname', // 中文姓名
+  email: '@email', // 邮箱
+  url: '@url', // URL
+  word: '@word', // 单词
+
   // 数字
-  'age|18-60': 1,                // 18-60 之间的随机数
-  'score|1-100.1-2': 1,          // 1-100 之间的小数，保留 1-2 位
-  
+  'age|18-60': 1, // 18-60 之间的随机数
+  'score|1-100.1-2': 1, // 1-100 之间的小数，保留 1-2 位
+
   // 布尔值
-  'isActive|1': true,            // 50% 概率为 true
-  
+  'isActive|1': true, // 50% 概率为 true
+
   // 数组
-  'list|5-10': [{                // 5-10 个元素
-    'id|+1': 1,                  // 自增 ID
-    'name': '@cname',
-  }],
-  
+  'list|5-10': [
+    {
+      // 5-10 个元素
+      'id|+1': 1, // 自增 ID
+      name: '@cname',
+    },
+  ],
+
   // 对象
-  'user': {
-    'name': '@cname',
+  user: {
+    name: '@cname',
     'age|18-60': 1,
   },
-  
+
   // 日期时间
-  'createTime': '@datetime("yyyy-MM-dd HH:mm:ss")',
-  
+  createTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
+
   // 图片
-  'avatar': '@image("200x200", "@color", "@name")',
-  
+  avatar: '@image("200x200", "@color", "@name")',
+
   // 随机选择
-  'role': '@pick(["admin", "user", "guest"])',
+  role: '@pick(["admin", "user", "guest"])',
 });
 ```
 
@@ -161,7 +166,7 @@ Mock.mock({
   response: async ({ query }) => {
     const page = Number(query?.page) || 1;
     const pageSize = Number(query?.pageSize) || 10;
-    
+
     return successResponse({
       list: Mock.mock({
         [`list|${pageSize}`]: [{
@@ -183,7 +188,7 @@ Mock.mock({
   method: 'post',
   response: async ({ body }) => {
     await delay(500);
-    
+
     return successResponse({
       id: Mock.Random.integer(1000, 9999),
       ...body,
@@ -232,6 +237,7 @@ Mock.mock({
 ### Q: Mock 不生效？
 
 A: 检查以下几点：
+
 - 确认 `VITE_USE_MOCK=true` 已设置
 - 检查 URL 和方法是否匹配
 - 查看控制台是否有错误信息
@@ -239,7 +245,8 @@ A: 检查以下几点：
 
 ### Q: 如何调试 Mock？
 
-A: 
+A:
+
 - 在 `response` 函数中添加 `console.log` 输出
 - 检查浏览器 Network 面板，查看请求是否被拦截
 - 查看 Vite 控制台的 Mock 日志

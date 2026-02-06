@@ -33,7 +33,7 @@ let mockEnabled = false;
 async function initMockInterceptor() {
   // 检查是否启用 mock
   const useMock = import.meta.env.VITE_USE_MOCK === 'true' || import.meta.env.DEV;
-  
+
   if (!useMock) {
     return;
   }
@@ -71,11 +71,10 @@ function matchMockConfig(
       typeof config.url === 'string'
         ? url === config.url || url.startsWith(config.url)
         : config.url instanceof RegExp
-        ? config.url.test(url)
-        : false;
+          ? config.url.test(url)
+          : false;
 
-    const methodMatch =
-      !config.method || config.method.toLowerCase() === method.toLowerCase();
+    const methodMatch = !config.method || config.method.toLowerCase() === method.toLowerCase();
 
     if (urlMatch && methodMatch) {
       return config;
@@ -114,7 +113,7 @@ async function executeMockResponse<T = unknown>(
 
   // 应用延迟
   if (config.delay) {
-    await new Promise((resolve) => setTimeout(resolve, config.delay));
+    await new Promise(resolve => setTimeout(resolve, config.delay));
   }
 
   // 构建响应对象
@@ -229,22 +228,17 @@ class Request {
     return `${url}${separator}${queryString}`;
   }
 
-
   /**
    * 解析响应数据
    * @param response Fetch Response 对象
    * @param autoParseJSON 是否自动解析 JSON
    * @returns 解析后的数据
    */
-  private async parseResponse<T>(
-    response: Response,
-    autoParseJSON?: boolean
-  ): Promise<T> {
+  private async parseResponse<T>(response: Response, autoParseJSON?: boolean): Promise<T> {
     const contentType = response.headers.get('content-type') || '';
     const shouldParseJSON =
       autoParseJSON !== false &&
-      (contentType.includes('application/json') ||
-        contentType.includes('text/json'));
+      (contentType.includes('application/json') || contentType.includes('text/json'));
 
     if (shouldParseJSON) {
       try {
@@ -260,7 +254,10 @@ class Request {
       return (await response.text()) as T;
     }
 
-    if (contentType.includes('application/octet-stream') || contentType.includes('application/pdf')) {
+    if (
+      contentType.includes('application/octet-stream') ||
+      contentType.includes('application/pdf')
+    ) {
       return (await response.blob()) as T;
     }
 
@@ -325,11 +322,7 @@ class Request {
 
       // Mock 拦截：如果启用了 mock 且匹配到 mock 配置，直接返回 mock 数据
       if (mockEnabled && mockConfigs) {
-        const mockConfig = matchMockConfig(
-          fullURL,
-          finalConfig.method || 'GET',
-          mockConfigs
-        );
+        const mockConfig = matchMockConfig(fullURL, finalConfig.method || 'GET', mockConfigs);
 
         if (mockConfig) {
           try {
@@ -373,10 +366,7 @@ class Request {
         }
 
         // 解析响应数据
-        const data = await this.parseResponse<T>(
-          response,
-          finalConfig.autoParseJSON
-        );
+        const data = await this.parseResponse<T>(response, finalConfig.autoParseJSON);
 
         // 构建响应对象
         const responseData: ResponseData<T> = {
@@ -396,9 +386,7 @@ class Request {
 
         // 处理错误
         const err =
-          error instanceof Error
-            ? error
-            : new Error(error ? String(error) : 'Unknown error');
+          error instanceof Error ? error : new Error(error ? String(error) : 'Unknown error');
 
         // 如果是取消请求，特殊处理
         if (err.name === 'AbortError') {

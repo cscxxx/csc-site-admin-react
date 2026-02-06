@@ -1,7 +1,14 @@
 import { useRef } from 'react';
 import { Layout, Menu, Button, Space } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { DashboardOutlined, UserOutlined, SettingOutlined, ApiOutlined, BarChartOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  DashboardOutlined,
+  UserOutlined,
+  SettingOutlined,
+  ApiOutlined,
+  BarChartOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 import { useAuthStore } from '@/store';
 import { useTitleAnimation } from './use-anime';
 import styles from './index.module.less';
@@ -11,7 +18,7 @@ const { Header, Footer, Sider, Content } = Layout;
 function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const logout = useAuthStore((state) => state.logout);
+  const logout = useAuthStore(state => state.logout);
 
   // 为每个单词创建 ref
   const cscRef = useRef<HTMLSpanElement>(null);
@@ -71,9 +78,13 @@ function AppLayout() {
     <Layout className={styles.layout}>
       <Header className={styles.header}>
         <div className={styles.headerTitle}>
-          <span ref={cscRef} className={styles.titleWord}>CSC</span>
+          <span ref={cscRef} className={styles.titleWord}>
+            CSC
+          </span>
           <span className={styles.titleSpace}> </span>
-          <span ref={siteRef} className={styles.titleWord}>Site</span>
+          <span ref={siteRef} className={styles.titleWord}>
+            Site
+          </span>
         </div>
         <Space>
           <span>欢迎，管理员</span>

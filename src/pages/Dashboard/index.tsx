@@ -1,5 +1,10 @@
 import { Card, Row, Col, Statistic } from 'antd';
-import { UserOutlined, ShoppingCartOutlined, DollarOutlined, LineChartOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  DollarOutlined,
+  LineChartOutlined,
+} from '@ant-design/icons';
 import styles from './index.module.less';
 import { COLORS } from '../../styles/constants';
 import { formatCurrency, formatPercentage, formatNumber } from '../../utils/formatNumber';
@@ -14,7 +19,7 @@ function Dashboard() {
             <Statistic
               title="总用户数"
               value={1128}
-              formatter={(value) => formatNumber(value as number)}
+              formatter={value => formatNumber(value as number)}
               prefix={<UserOutlined />}
               styles={{ content: { color: COLORS.success } }}
             />
@@ -25,7 +30,7 @@ function Dashboard() {
             <Statistic
               title="订单总数"
               value={9324}
-              formatter={(value) => formatNumber(value as number)}
+              formatter={value => formatNumber(value as number)}
               prefix={<ShoppingCartOutlined />}
               styles={{ content: { color: COLORS.primary } }}
             />
@@ -36,7 +41,7 @@ function Dashboard() {
             <Statistic
               title="总收入"
               value={112893}
-              formatter={(value) => formatCurrency(value as number)}
+              formatter={value => formatCurrency(value as number)}
               prefix={<DollarOutlined />}
               styles={{ content: { color: COLORS.error } }}
             />
@@ -47,7 +52,7 @@ function Dashboard() {
             <Statistic
               title="增长率"
               value={9.3}
-              formatter={(value) => formatPercentage(value as number)}
+              formatter={value => formatPercentage(value as number)}
               prefix={<LineChartOutlined />}
               styles={{ content: { color: COLORS.success } }}
             />

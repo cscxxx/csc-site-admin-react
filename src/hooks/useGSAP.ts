@@ -10,13 +10,13 @@ export interface UseGSAPOptions {
    * 如果提供 ref，动画将在该元素内执行
    */
   scope?: RefObject<HTMLElement | null> | RefObject<Element | null> | string;
-  
+
   /**
    * 依赖项数组，当依赖项变化时重新执行动画
    * 类似于 useEffect 的依赖项
    */
   dependencies?: React.DependencyList;
-  
+
   /**
    * 是否在组件挂载时立即执行动画
    * 默认为 true
@@ -26,38 +26,38 @@ export interface UseGSAPOptions {
 
 /**
  * GSAP React Hook
- * 
+ *
  * 在 React 组件中使用 GSAP 动画的便捷 Hook
  * 自动处理动画的清理，避免内存泄漏
- * 
+ *
  * @param callback 执行 GSAP 动画的函数
  * @param options 配置选项
- * 
+ *
  * @example
  * ```tsx
  * import { useGSAP } from '@/hooks/useGSAP'
  * import gsap from 'gsap'
- * 
+ *
  * function MyComponent() {
  *   const ref = useRef<HTMLDivElement>(null)
- *   
+ *
  *   useGSAP(() => {
  *     gsap.from(ref.current, { opacity: 0, y: 20, duration: 1 })
  *   }, { scope: ref })
- *   
+ *
  *   return <div ref={ref}>Animated content</div>
  * }
  * ```
- * 
+ *
  * @example 使用 ScrollTrigger
  * ```tsx
  * import { useGSAP } from '@/hooks/useGSAP'
  * import gsap from 'gsap'
  * import { ScrollTrigger } from '@/config/gsap'
- * 
+ *
  * function MyComponent() {
  *   const ref = useRef<HTMLDivElement>(null)
- *   
+ *
  *   useGSAP(() => {
  *     gsap.to(ref.current, {
  *       scrollTrigger: {
@@ -70,7 +70,7 @@ export interface UseGSAPOptions {
  *       opacity: 1
  *     })
  *   }, { scope: ref })
- *   
+ *
  *   return <div ref={ref}>Animated content</div>
  * }
  * ```
@@ -79,11 +79,7 @@ export function useGSAP(
   callback: (context?: gsap.Context) => void,
   options: UseGSAPOptions = {}
 ): void {
-  const {
-    scope,
-    dependencies = [],
-    immediate = true,
-  } = options;
+  const { scope, dependencies = [], immediate = true } = options;
 
   const ctxRef = useRef<gsap.Context | null>(null);
   const callbackRef = useRef(callback);

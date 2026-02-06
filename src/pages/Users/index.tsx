@@ -37,9 +37,7 @@ const columns: ColumnsType<User> = [
     title: '状态',
     dataIndex: 'status',
     key: 'status',
-    render: (status: string) => (
-      <Tag color={status === '活跃' ? 'green' : 'red'}>{status}</Tag>
-    ),
+    render: (status: string) => <Tag color={status === '活跃' ? 'green' : 'red'}>{status}</Tag>,
   },
   {
     title: '操作',

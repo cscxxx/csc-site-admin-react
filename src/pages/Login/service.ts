@@ -33,11 +33,11 @@ export async function login(params: LoginParams): Promise<{
 }> {
   const { promise } = request.post<LoginResponse>('/api/admin/login', params);
   const response = await promise;
-  
+
   // 从响应头获取 authentication
   const authentication = response.headers.get('authentication') || '';
   const token = authentication ? `Bearer ${authentication}` : '';
-  
+
   return {
     response: response.data,
     token,

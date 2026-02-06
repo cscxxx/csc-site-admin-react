@@ -39,9 +39,7 @@ export interface ResponseData<T = unknown> {
  * 请求拦截器函数类型
  * 用于在发送请求前修改配置
  */
-export type RequestInterceptor = (
-  config: RequestConfig
-) => RequestConfig | Promise<RequestConfig>;
+export type RequestInterceptor = (config: RequestConfig) => RequestConfig | Promise<RequestConfig>;
 
 /**
  * 响应拦截器函数类型

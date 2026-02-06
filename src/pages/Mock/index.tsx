@@ -127,13 +127,16 @@ function Mock() {
   ];
 
   // 按分类分组
-  const groupedApis = apiList.reduce((acc, api) => {
-    if (!acc[api.category]) {
-      acc[api.category] = [];
-    }
-    acc[api.category].push(api);
-    return acc;
-  }, {} as Record<string, ApiItem[]>);
+  const groupedApis = apiList.reduce(
+    (acc, api) => {
+      if (!acc[api.category]) {
+        acc[api.category] = [];
+      }
+      acc[api.category].push(api);
+      return acc;
+    },
+    {} as Record<string, ApiItem[]>
+  );
 
   const columns: ColumnsType<ApiItem> = [
     {
@@ -246,7 +249,7 @@ function Mock() {
     }
   };
 
-  const tabItems = Object.keys(groupedApis).map((category) => ({
+  const tabItems = Object.keys(groupedApis).map(category => ({
     key: category,
     label: category,
     children: (
@@ -285,7 +288,17 @@ function Mock() {
               <Descriptions column={1} size="small" bordered>
                 <Descriptions.Item label="API 名称">{selectedApi.name}</Descriptions.Item>
                 <Descriptions.Item label="请求方法">
-                  <Tag color={selectedApi.method === 'GET' ? 'blue' : selectedApi.method === 'POST' ? 'green' : selectedApi.method === 'PUT' ? 'orange' : 'red'}>
+                  <Tag
+                    color={
+                      selectedApi.method === 'GET'
+                        ? 'blue'
+                        : selectedApi.method === 'POST'
+                          ? 'green'
+                          : selectedApi.method === 'PUT'
+                            ? 'orange'
+                            : 'red'
+                    }
+                  >
                     {selectedApi.method}
                   </Tag>
                 </Descriptions.Item>

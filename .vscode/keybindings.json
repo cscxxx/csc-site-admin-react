@@ -1,0 +1,13 @@
+[
+  {
+    "key": "cmd+s",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "editor.action.formatDocument",
+        "workbench.action.files.save"
+      ]
+    },
+    "when": "editorTextFocus && !editorReadonly"
+  }
+]

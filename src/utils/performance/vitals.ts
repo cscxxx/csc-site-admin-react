@@ -87,9 +87,9 @@ export function getPerformanceHistory(): PerformanceRecord[] {
     if (!data) return [];
     const records = JSON.parse(data) as PerformanceRecord[];
     // 为旧数据（没有 id）生成唯一 ID，并保存回 localStorage
-    const needsMigration = records.some((record) => !record.id);
+    const needsMigration = records.some(record => !record.id);
     if (needsMigration) {
-      const migrated = records.map((record) => ({
+      const migrated = records.map(record => ({
         ...record,
         id: record.id || `${record.timestamp}-${Math.random().toString(36).substring(2, 9)}`,
       }));
@@ -172,20 +172,20 @@ function onMetricReport(metric: Metric): void {
 
 /**
  * 初始化 Web Vitals 监控
- * 
+ *
  * 开始收集 Core Web Vitals 指标：
  * - LCP (Largest Contentful Paint)
  * - INP (Interaction to Next Paint)
  * - CLS (Cumulative Layout Shift)
  * - FCP (First Contentful Paint)
  * - TTFB (Time to First Byte)
- * 
+ *
  * @param onReport - 指标更新回调函数（可选），当指标更新时会调用此函数
- * @remarks 
+ * @remarks
  * - 使用防抖机制避免频繁触发回调
  * - 当收集到至少 3 个指标时会自动保存记录
  * - 应在应用启动时调用（main.tsx）
- * 
+ *
  * @example
  * ```typescript
  * initWebVitals((metrics) => {

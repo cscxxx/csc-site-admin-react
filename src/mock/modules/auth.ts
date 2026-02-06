@@ -22,7 +22,7 @@ const authMocks: MockConfig[] = [
             token: Mock.mock('@guid'),
             userInfo: {
               id: 1,
-            username: 'admin',
+              username: 'admin',
               name: '管理员',
               email: 'admin@example.com',
               avatar: Mock.Random.image('100x100', Mock.Random.color(), 'Admin'),

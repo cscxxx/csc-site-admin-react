@@ -35,23 +35,21 @@ const userMocks: MockConfig[] = [
         [`list|${pageSize}`]: [
           {
             'id|+1': (page - 1) * pageSize + 1,
-            'name': '@cname',
-            'email': '@email',
-            'phone': /^1[3-9]\d{9}$/,
-            'role': '@pick(["管理员", "用户", "访客"])',
-            'status': '@pick(["活跃", "禁用", "待激活"])',
-            'avatar': '@image("100x100", "@color", "@name")',
-            'createTime': '@datetime("yyyy-MM-dd HH:mm:ss")',
-            'lastLoginTime': '@datetime("yyyy-MM-dd HH:mm:ss")',
+            name: '@cname',
+            email: '@email',
+            phone: /^1[3-9]\d{9}$/,
+            role: '@pick(["管理员", "用户", "访客"])',
+            status: '@pick(["活跃", "禁用", "待激活"])',
+            avatar: '@image("100x100", "@color", "@name")',
+            createTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
+            lastLoginTime: '@datetime("yyyy-MM-dd HH:mm:ss")',
           },
         ],
       }).list;
 
       // 如果有关键词，过滤数据
       const filteredList = keyword
-        ? list.filter((user: User) =>
-            user.name.includes(keyword) || user.email.includes(keyword)
-          )
+        ? list.filter((user: User) => user.name.includes(keyword) || user.email.includes(keyword))
         : list;
 
       return pageResponse(filteredList, total, page, pageSize);
