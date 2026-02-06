@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+dist/
+build/
+
+# 构建产物
+*.min.js
+*.min.css
+
+# 日志
+*.log
+
+# 锁文件
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 配置文件
+.eslintcache

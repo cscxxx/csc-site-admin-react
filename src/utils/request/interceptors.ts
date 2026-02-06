@@ -13,7 +13,7 @@ import type {
   RequestInterceptor,
   ResponseInterceptor,
   ErrorInterceptor,
-} from './types';
+} from '@/types';
 
 /**
  * 拦截器管理器

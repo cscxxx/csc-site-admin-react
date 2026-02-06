@@ -9,7 +9,7 @@ import type {
   RequestInterceptor,
   ResponseInterceptor,
   ErrorInterceptor,
-} from './types';
+} from '@/types';
 
 import {
   InterceptorManager,
@@ -19,7 +19,7 @@ import {
   type Interceptors,
 } from './interceptors';
 
-import type { MockConfig } from '../../mock/utils';
+import type { MockConfig } from '@/types';
 import { createRequestErrorInterceptor } from './errorHandler';
 
 // Mock 拦截器（仅在启用时导入）

@@ -7,7 +7,7 @@ import styles from './index.module.less';
 
 function Login() {
   const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.login);
+  const setAuth = useAuthStore(state => state.login);
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const { message } = App.useApp();
@@ -80,13 +80,7 @@ function Login() {
       }}
     >
       <Card className={styles.loginCard} title="登录" variant="borderless">
-        <Form
-          form={form}
-          name="login"
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-        >
+        <Form form={form} name="login" onFinish={onFinish} autoComplete="off" layout="vertical">
           <Form.Item
             label="用户名"
             name="loginId"

@@ -4,7 +4,7 @@ import { ReloadOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { usePerformanceStore } from '@/store';
 import { initWebVitals, getCurrentMetrics, clearPerformanceHistory } from '@/utils/performance/vitals';
-import type { PerformanceRecord } from '@/utils/performance/vitals';
+import type { PerformanceRecord } from '@/types';
 import { formatNumber } from '@/utils/formatNumber';
 import { COLORS } from '@/styles/constants';
 import styles from './index.module.less';

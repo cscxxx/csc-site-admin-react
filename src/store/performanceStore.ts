@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { VitalMetric, PerformanceRecord } from '@/utils/performance/vitals';
+import type { VitalMetric, PerformanceRecord } from '@/types';
 import { getPerformanceHistory, clearPerformanceHistory } from '@/utils/performance/vitals';
 
 /**

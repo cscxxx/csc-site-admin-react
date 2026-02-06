@@ -3,7 +3,7 @@
  * 用于记录、格式化和上报错误信息
  */
 
-import type { ErrorInfo } from './types';
+import type { ErrorInfo } from '@/types';
 
 /**
  * 错误日志存储键名

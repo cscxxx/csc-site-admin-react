@@ -4,7 +4,7 @@
  */
 
 import { handleError } from '@/utils/error/logger';
-import type { ResponseData } from './types';
+import type { ResponseData } from '@/types';
 
 /**
  * 处理 HTTP 响应错误

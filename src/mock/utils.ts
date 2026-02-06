@@ -3,14 +3,7 @@
  * 提供响应包装、延迟等常用功能
  */
 
-/**
- * 统一响应格式
- */
-export interface MockResponse<T = unknown> {
-  code: number;
-  message?: string;
-  data: T;
-}
+import type { MockResponse } from '@/types';
 
 /**
  * 成功响应包装函数
@@ -76,19 +69,5 @@ export function delay(ms: number = 300): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/**
- * Mock 配置接口
- */
-export interface MockConfig {
-  url: string | RegExp;
-  method: 'get' | 'post' | 'put' | 'delete' | 'patch' | string;
-  response: (options: {
-    url: string;
-    method: string;
-    body: unknown;
-    query: Record<string, unknown>;
-    headers: Record<string, unknown>;
-  }) => unknown | Promise<unknown>;
-  delay?: number;
-  statusCode?: number;
-}
+// MockConfig 类型已统一到 @/types/mock.ts，重新导出以保持向后兼容
+export type { MockConfig } from '@/types';

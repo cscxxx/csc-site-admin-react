@@ -1,32 +1,5 @@
 import request from '@/utils/request';
-
-/**
- * 登录请求参数
- */
-export interface LoginParams {
-  loginId: string;
-  loginPwd: string;
-  captcha: string;
-  remember: number;
-}
-
-/**
- * 登录响应数据
- */
-export interface LoginResponseData {
-  id: number;
-  loginId: string;
-  name: string;
-}
-
-/**
- * 登录响应（成功时）
- */
-export interface LoginResponse {
-  code: number;
-  msg: string;
-  data: LoginResponseData | null;
-}
+import type { LoginParams, LoginResponse } from '@/types';
 
 /**
  * 登录错误响应

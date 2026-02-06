@@ -4,27 +4,7 @@
  */
 
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
-
-/**
- * Web Vitals 指标类型
- */
-export interface VitalMetric {
-  name: string;
-  value: number;
-  rating: 'good' | 'needs-improvement' | 'poor';
-  delta: number;
-  id: string;
-  timestamp: number;
-}
-
-/**
- * 历史性能数据记录
- */
-export interface PerformanceRecord {
-  id: string;
-  timestamp: number;
-  metrics: Record<string, VitalMetric>;
-}
+import type { VitalMetric, PerformanceRecord } from '@/types';
 
 /**
  * 指标阈值配置

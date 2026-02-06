@@ -14,8 +14,6 @@ pnpm-lock.yaml
 package-lock.json
 yarn.lock
 
-# IDE 配置
-.vscode/
 .idea/
 *.swp
 *.swo
