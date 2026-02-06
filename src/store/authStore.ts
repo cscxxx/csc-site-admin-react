@@ -17,7 +17,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => set({ token: null, isAuthenticated: false }),
     }),
     {
-      name: 'auth-storage',
+      name: 'csc-site-admin-token',
       storage: createJSONStorage(() => localStorage),
       // 多标签页同步：persist middleware 会自动处理 storage 事件
     }
@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>()(
 // 监听 storage 事件以实现多标签页同步
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (e) => {
-    if (e.key === 'auth-storage' && e.newValue) {
+    if (e.key === 'csc-site-admin-token' && e.newValue) {
       // Zustand persist middleware 会自动处理，这里可以添加额外的同步逻辑
       useAuthStore.persist.rehydrate();
     }

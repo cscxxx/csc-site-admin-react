@@ -1,0 +1,32 @@
+---
+description: "React 组件和 Hooks 规范，包括组件编写、Hooks 使用和性能优化"
+alwaysApply: true
+---
+
+# React 规范
+
+## 组件编写
+- 使用函数组件和 Hooks，不要使用类组件
+- 组件使用 PascalCase 命名（如 `UserProfile`）
+- 组件文件使用默认导出，文件名与组件名保持一致
+- 使用 `React.lazy` 和 `Suspense` 进行代码分割和懒加载
+- 避免在渲染期间访问 refs，使用 `useEffect` 或事件处理器访问
+
+## Hooks 使用
+- 使用 `useCallback` 包装传递给子组件的函数，避免不必要的重渲染
+- 使用 `useMemo` 缓存昂贵的计算结果
+- 正确使用依赖数组，包含所有外部依赖
+- 自定义 Hook 以 `use` 开头命名
+- 避免在条件语句或循环中调用 Hooks
+
+## 性能优化
+- 使用 `React.memo` 包装纯组件
+- 避免在 JSX 中创建内联对象和函数
+- 使用 `key` 属性优化列表渲染
+- 合理使用 `useCallback` 和 `useMemo`，避免过度优化
+
+## 组件设计原则
+- 保持组件单一职责
+- 提取可复用的逻辑到自定义 Hooks
+- 使用组合而非继承
+- 合理拆分大型组件

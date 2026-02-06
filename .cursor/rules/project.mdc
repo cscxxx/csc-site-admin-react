@@ -1,0 +1,40 @@
+---
+description: "项目特定规范，包括技术栈、状态管理、路由和请求处理"
+alwaysApply: true
+---
+
+# 项目特定规范
+
+## 技术栈
+- React 19.2.0
+- Ant Design 6.2.3
+- TypeScript 5.9.3
+- React Router DOM 7.13.0
+- Zustand 5.0.11
+- Vite
+- Less (模块化样式)
+
+## 状态管理（Zustand）
+- 使用 `create` 创建 store
+- 使用 `persist` middleware 持久化状态
+- Store 文件以 `*Store.ts` 命名
+- 使用 selector 选择需要的状态，避免不必要的重渲染
+
+## 路由（React Router DOM v7）
+- 使用 `createBrowserRouter` 创建路由
+- 使用 `React.lazy` 进行路由懒加载
+- 使用 `LazyRoute` 组件包装懒加载路由
+- 受保护路由使用 `ProtectedRoute` 组件
+- 使用 `useNavigate` Hook 进行编程式导航
+
+## 请求处理
+- 使用项目自定义的 `request` 工具（`@/utils/request`）
+- API 服务函数放在 `service.ts` 文件中
+- 定义请求和响应的 TypeScript 接口
+- 处理错误响应，显示友好的错误提示
+- 使用全局错误处理机制
+
+## 代码提交
+- 使用 Conventional Commits 规范
+- 类型：`feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
+- 格式：`<type>(<scope>): <subject>`
