@@ -14,10 +14,10 @@ import type { MockResponse } from '@/types';
 export function successResponse<T = unknown>(
   data: T,
   message: string = '操作成功'
-): MockResponse<T> {
+): { code: number; msg: string; data: T } {
   return {
-    code: 200,
-    message,
+    code: 0,
+    msg: message,
     data,
   };
 }
@@ -31,10 +31,10 @@ export function successResponse<T = unknown>(
 export function errorResponse(
   message: string = '操作失败',
   code: number = 400
-): MockResponse<null> {
+): { code: number; msg: string; data: null } {
   return {
     code,
-    message,
+    msg: message,
     data: null,
   };
 }

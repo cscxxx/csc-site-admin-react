@@ -2,22 +2,18 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
-import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    // Mock 插件配置
-    viteMockServe({
-      // 只在开发环境启用
-      enable: process.env.VITE_USE_MOCK === 'true' || process.env.NODE_ENV === 'development',
-      // mock 文件位置
-      mockPath: 'src/mock',
-      // 是否在控制台显示请求日志
-      logger: true,
-    }),
+    // Mock 插件配置（已禁用，各页面 Mock 通过注释控制）
+    // viteMockServe({
+    //   enable: false,
+    //   mockPath: 'src/mock',
+    //   logger: true,
+    // }),
   ],
   resolve: {
     alias: {
@@ -29,12 +25,14 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/res': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/static': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
       },
     },
   },

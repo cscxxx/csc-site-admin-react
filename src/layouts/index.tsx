@@ -8,6 +8,7 @@ import {
   ApiOutlined,
   BarChartOutlined,
   LogoutOutlined,
+  FileTextOutlined,
 } from '@ant-design/icons';
 import { useAuthStore } from '@/store';
 import { useTitleAnimation } from './use-anime';
@@ -44,6 +45,11 @@ function AppLayout() {
       key: '/users',
       icon: <UserOutlined />,
       label: '用户管理',
+    },
+    {
+      key: '/banner',
+      icon: <FileTextOutlined />,
+      label: '首页标语',
     },
     {
       key: '/settings',

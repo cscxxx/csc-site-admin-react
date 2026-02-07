@@ -34,3 +34,10 @@ export type { MenuItem, TableColumn, OptionItem, KeyValuePair } from './common';
 
 // Mock 相关类型
 export type { MockResponse, MockConfigOptions, MockConfig } from './mock';
+
+// Banner 相关类型
+export type {
+  BannerItem,
+  BannerSubmitItem,
+  BannerListResponse,
+} from './banner';

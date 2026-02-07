@@ -1,5 +1,7 @@
 import request from '@/utils/request';
 import type { LoginParams, LoginResponse } from '@/types';
+// 使用 Mock 数据（取消注释以启用）
+// import { getCaptchaMock, loginMock } from './mock';
 
 /**
  * 登录错误响应
@@ -15,6 +17,9 @@ export interface LoginErrorResponse {
  * @returns 返回 SVG 字符串
  */
 export async function getCaptcha(): Promise<string> {
+  // 使用 Mock 数据（取消注释以启用）
+  // return await getCaptchaMock();
+
   const { promise } = request.get<string>('/res/captcha', {
     autoParseJSON: false, // SVG 是文本格式，不需要解析 JSON
   });
@@ -31,6 +36,9 @@ export async function login(params: LoginParams): Promise<{
   response: LoginResponse;
   token: string;
 }> {
+  // 使用 Mock 数据（取消注释以启用）
+  // return await loginMock(params);
+
   const { promise } = request.post<LoginResponse>('/api/admin/login', params);
   const response = await promise;
 

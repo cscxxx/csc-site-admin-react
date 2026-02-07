@@ -19,118 +19,7 @@ import {
   type Interceptors,
 } from './interceptors';
 
-import type { MockConfig } from '@/types';
 import { createRequestErrorInterceptor } from './errorHandler';
-
-// Mock 拦截器（仅在启用时导入）
-let mockConfigs: MockConfig[] | null = null;
-let mockEnabled = false;
-
-/**
- * 初始化 Mock 拦截器
- * 注意：项目已使用 vite-plugin-mock，此拦截器作为备用方案
- */
-async function initMockInterceptor() {
-  // 检查是否启用 mock
-  const useMock = import.meta.env.VITE_USE_MOCK === 'true' || import.meta.env.DEV;
-
-  if (!useMock) {
-    return;
-  }
-
-  try {
-    // 动态导入 mock 配置
-    // 注意：由于 vite-plugin-mock 已经处理了 mock 文件，这里主要用于手动拦截器
-    // 如果 vite-plugin-mock 正常工作，这个拦截器可能不会被使用
-    // 使用 @vite-ignore 让 Vite 在运行时解析这个动态导入
-    const mockModule = await import(/* @vite-ignore */ '../../mock/index');
-    mockConfigs = mockModule.default || [];
-    mockEnabled = true;
-  } catch (error) {
-    // Mock 加载失败不影响正常请求
-    // 如果 vite-plugin-mock 已启用，这个错误可以忽略
-    console.warn('Failed to load mock configs (this is OK if vite-plugin-mock is enabled):', error);
-    mockEnabled = false;
-  }
-}
-
-/**
- * 匹配 Mock 配置
- */
-function matchMockConfig(
-  url: string,
-  method: string,
-  mockConfigs: MockConfig[]
-): MockConfig | null {
-  if (!mockConfigs || mockConfigs.length === 0) {
-    return null;
-  }
-
-  for (const config of mockConfigs) {
-    const urlMatch =
-      typeof config.url === 'string'
-        ? url === config.url || url.startsWith(config.url)
-        : config.url instanceof RegExp
-          ? config.url.test(url)
-          : false;
-
-    const methodMatch = !config.method || config.method.toLowerCase() === method.toLowerCase();
-
-    if (urlMatch && methodMatch) {
-      return config;
-    }
-  }
-
-  return null;
-}
-
-/**
- * 执行 Mock 响应
- */
-async function executeMockResponse<T = unknown>(
-  config: MockConfig,
-  url: string,
-  method: string,
-  body: unknown,
-  query: Record<string, unknown>,
-  headers: Record<string, unknown>
-): Promise<ResponseData<T>> {
-  // 解析查询参数
-  const urlObj = new URL(url, window.location.origin);
-  const queryParams: Record<string, unknown> = {};
-  urlObj.searchParams.forEach((value, key) => {
-    queryParams[key] = value;
-  });
-
-  // 执行 mock response 函数
-  const responseData = await config.response({
-    url,
-    method,
-    body,
-    query: { ...queryParams, ...query },
-    headers,
-  });
-
-  // 应用延迟
-  if (config.delay) {
-    await new Promise(resolve => setTimeout(resolve, config.delay));
-  }
-
-  // 构建响应对象
-  return {
-    data: responseData as T,
-    status: config.statusCode || 200,
-    statusText: 'OK',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-  };
-}
-
-// 初始化 mock（仅在开发环境）
-if (import.meta.env.DEV) {
-  initMockInterceptor();
-}
 
 // 重新导出类型，方便外部使用
 export type {
@@ -300,49 +189,19 @@ class Request {
       const fullURL = this.buildURL(url, finalConfig.baseURL, finalConfig.params);
 
       // 准备请求体
-      let body: unknown;
       let requestBody: string | FormData | URLSearchParams | undefined;
       if (finalConfig.data !== undefined) {
         if (finalConfig.data instanceof FormData || finalConfig.data instanceof URLSearchParams) {
           requestBody = finalConfig.data;
-          body = finalConfig.data;
           // FormData 会自动设置 Content-Type，需要删除手动设置的
           const headers = new Headers(finalConfig.headers);
           headers.delete('Content-Type');
           finalConfig.headers = headers;
         } else {
           requestBody = JSON.stringify(finalConfig.data);
-          try {
-            body = JSON.parse(requestBody);
-          } catch {
-            body = finalConfig.data;
-          }
         }
       }
 
-      // Mock 拦截：如果启用了 mock 且匹配到 mock 配置，直接返回 mock 数据
-      if (mockEnabled && mockConfigs) {
-        const mockConfig = matchMockConfig(fullURL, finalConfig.method || 'GET', mockConfigs);
-
-        if (mockConfig) {
-          try {
-            const mockResponse = await executeMockResponse<T>(
-              mockConfig,
-              fullURL,
-              finalConfig.method || 'GET',
-              body,
-              finalConfig.params || {},
-              finalConfig.headers as Record<string, unknown>
-            );
-
-            // 应用响应拦截器
-            return await applyResponseInterceptors(mockResponse, this.interceptors);
-          } catch (error) {
-            // Mock 执行失败，继续发送真实请求
-            console.warn('Mock execution failed, falling back to real request:', error);
-          }
-        }
-      }
 
       // 获取超时时间（拦截器可能会修改）
       const timeout = finalConfig.timeout || this.defaultConfig.timeout || 10000;

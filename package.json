@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
     "preview": "vite preview",
-    "prepare": "husky",
+    "prepare": "husky install",
     "commitlint": "commitlint --edit",
     "lint-staged": "lint-staged"
   },
