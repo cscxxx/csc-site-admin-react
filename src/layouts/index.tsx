@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { Layout, Menu, Dropdown, theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
@@ -56,6 +56,15 @@ function AppLayout() {
 
   const selectedKeys = [location.pathname];
 
+  // 侧栏子菜单展开：根据当前路径推导，在 blogtype/blog 下展开「文章管理」
+  const openKeys = useMemo(
+    () =>
+      location.pathname.startsWith('/blogtype') || location.pathname.startsWith('/blog')
+        ? ['article']
+        : [],
+    [location.pathname]
+  );
+
   // 头部下拉：当前在个人中心/设置页时高亮对应菜单项
   const headerSelectedKeys =
     location.pathname === '/admin'
@@ -103,6 +112,7 @@ function AppLayout() {
             <Menu
               mode="inline"
               selectedKeys={selectedKeys}
+              openKeys={openKeys}
               items={menuItems}
               onClick={handleMenuClick}
               className={styles.menu}

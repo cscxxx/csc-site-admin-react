@@ -33,6 +33,8 @@ const Admin = lazy(() => import('@/pages/Admin'));
 const About = lazy(() => import('@/pages/About'));
 const Message = lazy(() => import('@/pages/Message'));
 const Project = lazy(() => import('@/pages/Project'));
+const Blogtype = lazy(() => import('@/pages/Blogtype/index.tsx'));
+const Blog = lazy(() => import('@/pages/Blog/index.tsx'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -97,6 +99,14 @@ export const router = createBrowserRouter([
       {
         path: 'project',
         element: <LazyRoute component={Project} />,
+      },
+      {
+        path: 'blogtype',
+        element: <LazyRoute component={Blogtype} />,
+      },
+      {
+        path: 'blog',
+        element: <LazyRoute component={Blog} />,
       },
     ],
   },

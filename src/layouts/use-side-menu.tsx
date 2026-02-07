@@ -15,6 +15,7 @@ import {
   InfoCircleOutlined,
   MessageOutlined,
   ProjectOutlined,
+  FolderOutlined,
 } from '@ant-design/icons';
 
 export function useSideMenu(): MenuProps['items'] {
@@ -54,6 +55,15 @@ export function useSideMenu(): MenuProps['items'] {
         key: '/project',
         icon: <ProjectOutlined />,
         label: '示例项目',
+      },
+      {
+        key: 'article',
+        icon: <FolderOutlined />,
+        label: '文章管理',
+        children: [
+          { key: '/blogtype', label: '文章分类' },
+          { key: '/blog', label: '文章列表' },
+        ],
       },
       {
         key: '/mock',
