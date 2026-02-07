@@ -3,11 +3,12 @@
  */
 
 import { useMemo } from 'react';
-import { Button, Image } from 'antd';
+import { Button, Image, Spin } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import type { BannerItem } from '@/types';
 import type { BannerColumnsProps } from './types';
+import styles from './index.module.less';
 
 /**
  * 获取 Banner 表格列定义的 Hook
@@ -31,14 +32,22 @@ export function useColumns(props: BannerColumnsProps): ColumnsType<BannerItem> {
         key: 'midImg',
         width: 150,
         render: (url: string) => (
-          <Image
-            src={url}
-            alt="中等图片"
-            width={100}
-            height={60}
-            style={{ objectFit: 'cover', borderRadius: 4 }}
-            preview
-          />
+          <div className={styles.imageWrapper}>
+            <Image
+              src={url}
+              alt="中等图片"
+              width={100}
+              height={60}
+              style={{ objectFit: 'cover', borderRadius: 4 }}
+              preview
+              loading="lazy"
+              placeholder={
+                <div className={styles.imagePlaceholder}>
+                  <Spin size="small" />
+                </div>
+              }
+            />
+          </div>
         ),
       },
       {
@@ -47,14 +56,22 @@ export function useColumns(props: BannerColumnsProps): ColumnsType<BannerItem> {
         key: 'bigImg',
         width: 150,
         render: (url: string) => (
-          <Image
-            src={url}
-            alt="大图"
-            width={100}
-            height={60}
-            style={{ objectFit: 'cover', borderRadius: 4 }}
-            preview
-          />
+          <div className={styles.imageWrapper}>
+            <Image
+              src={url}
+              alt="大图"
+              width={100}
+              height={60}
+              style={{ objectFit: 'cover', borderRadius: 4 }}
+              preview
+              loading="lazy"
+              placeholder={
+                <div className={styles.imagePlaceholder}>
+                  <Spin size="small" />
+                </div>
+              }
+            />
+          </div>
         ),
       },
       {
