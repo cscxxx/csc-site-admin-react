@@ -40,17 +40,28 @@ export async function login(params: LoginParams): Promise<{
   // return await loginMock(params);
 
   const { promise } = request.post<LoginResponse>('/api/admin/login', params);
-  const response = await promise;
+  const res = await promise;
+  const body = res.data as LoginResponse;
+
+  // 业务失败：code 非 0 或 HTTP 未成功
+  if (body.code !== 0) {
+    throw new Error(body.msg || '登录失败');
+  }
+  if (res.status >= 400) {
+    throw new Error(body.msg || '请求失败');
+  }
 
   // 从响应头获取 token（仅保存原始值，不含 Bearer 前缀）
   const authHeader =
-    response.headers.get('authentication') ||
-    response.headers.get('Authorization') ||
-    '';
+    res.headers.get('authentication') || res.headers.get('Authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '').trim();
 
+  if (!token) {
+    throw new Error('未获取到登录凭证，请重试');
+  }
+
   return {
-    response: response.data,
+    response: body,
     token,
   };
 }

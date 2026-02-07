@@ -3,7 +3,7 @@
  */
 
 import { useEffect } from 'react';
-import { Modal, Form, Input, Button, Row, Col, App } from 'antd';
+import { Modal, Form, Input, Row, Col, App } from 'antd';
 import { ImageUpload } from '@/components/upload';
 import type { BannerFormData, EditModalProps } from '../types';
 import styles from '../index.module.less';
@@ -28,25 +28,36 @@ function EditModal(props: EditModalProps) {
     }
   }, [editingItem, open, form]);
 
-  // 处理表单提交
-  const handleSubmit = async (values: BannerFormData) => {
-    try {
-      await onSubmit(values);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : '提交失败';
-      message.error(errorMessage);
-    }
-  };
-
-  // 处理取消
   const handleCancel = () => {
     form.resetFields();
     onCancel();
   };
 
+  const handleOk = async () => {
+    const values = await form.validateFields();
+    try {
+      await onSubmit(values);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '提交失败';
+      message.error(errorMessage);
+      throw error;
+    }
+  };
+
   return (
-    <Modal title="编辑 Banner" open={open} onCancel={handleCancel} footer={null} width={640}>
-      <Form form={form} layout="vertical" onFinish={handleSubmit} className={styles.modalForm}>
+    <Modal
+      title="编辑 Banner"
+      open={open}
+      onCancel={handleCancel}
+      onOk={handleOk}
+      okText="确认"
+      cancelText="取消"
+      confirmLoading={submitting}
+      centered
+      width={640}
+      styles={{ body: { maxHeight: '80vh', overflowY: 'auto', overflowX: 'hidden' } }}
+    >
+      <Form form={form} layout="vertical" className={styles.modalForm}>
         <div className={styles.formSection}>
           <div className={styles.sectionLabel}>Banner 图片</div>
           <Row gutter={24}>
@@ -85,12 +96,6 @@ function EditModal(props: EditModalProps) {
             <Input.TextArea placeholder="请输入描述" rows={4} />
           </Form.Item>
         </div>
-        <Form.Item className={styles.formActions}>
-          <Button onClick={handleCancel}>取消</Button>
-          <Button type="primary" htmlType="submit" loading={submitting}>
-            提交
-          </Button>
-        </Form.Item>
       </Form>
     </Modal>
   );

@@ -49,22 +49,18 @@ function Login() {
         remember: values.remember ? 7 : 0,
       });
 
-      if (response.code === 0) {
-        // 登录成功，保存 token
+      if (response.code === 0 && token) {
         setAuth(token);
         message.success('登录成功！');
         navigate('/dashboard', { replace: true });
       } else {
-        // 登录失败
         message.error(response.msg || '登录失败，请重试');
-        // 登录失败后刷新验证码
         loadCaptcha();
         form.setFieldsValue({ captcha: '' });
       }
     } catch (error) {
-      console.error('Login error:', error);
-      message.error('登录失败，请检查网络连接');
-      // 登录失败后刷新验证码
+      const msg = error instanceof Error ? error.message : '登录失败，请检查网络连接';
+      message.error(msg);
       loadCaptcha();
       form.setFieldsValue({ captcha: '' });
     } finally {

@@ -1,25 +1,36 @@
 ---
-description: "Ant Design v6 组件库使用规范，包括 App 实例、表单处理和响应式设计"
+description: 'Ant Design v6 组件库使用规范，包括 App 实例、表单处理和响应式设计'
 alwaysApply: false
 ---
 
 # Ant Design v6 规范
 
 ## App 实例
+
 - 使用 `App.useApp()` 获取 `message`、`notification`、`modal` 等实例
 - 在组件顶层调用 `App.useApp()`，不要在条件语句中调用
 
 ## 表单处理
+
 - 使用 `Form.useForm()` 获取表单实例
 - 使用 `Form.Item` 的 `name` 属性绑定字段
 - 使用 `rules` 进行表单验证
 - 使用 `onFinish` 处理表单提交
 
 ## 响应式设计
+
 - 使用 `Row` 和 `Col` 组件进行栅格布局
 - 使用 `Col` 组件的响应式属性（`xs`, `sm`, `md`, `lg`, `xl`, `xxl`）
 - 使用 `Space` 组件管理间距
 
+## 弹框（Modal）（页面开发规则）
+
+- **居正中**：设置 `centered`，弹框在视口垂直水平居中
+- **高度**：body 最大高度为 80vh，内容过高时在弹框内滚动：`styles={{ body: { maxHeight: '80vh', overflowY: 'auto', overflowX: 'hidden' } }}`（bodyStyle 已弃用，用 styles；横向不处理）
+- **确认与取消**：使用弹框自带的底部按钮，不自定义 footer。设置 `onOk`、`onCancel`、`okText="确认"`、`cancelText="取消"`、`confirmLoading={submitting}`，不要在表单项里再写提交/取消按钮
+- 新建页面中的 Modal 均按以上规则编写
+
 ## 注意事项
+
 - 不要使用已弃用的 API，参考 Ant Design 官方文档使用最新 API
 - Table 组件的 `rowKey` 使用数据本身的唯一标识，不使用 `index` 参数

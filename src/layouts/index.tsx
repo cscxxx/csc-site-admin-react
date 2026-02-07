@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Layout, Menu, Button, Space } from 'antd';
+import { Layout, Menu, Button, Space, theme } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -20,16 +20,15 @@ function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const logout = useAuthStore(state => state.logout);
+  const { token } = theme.useToken();
 
-  // 为每个单词创建 ref
   const cscRef = useRef<HTMLSpanElement>(null);
   const siteRef = useRef<HTMLSpanElement>(null);
 
-  // 定义每个单词的颜色
-  const colors = ['#4A90E2', '#50C878']; // CSC 蓝色，Site 绿色
+  // 标题两词使用主题色（浅色字 + 主色浅底）
+  const titleColors = [token.colorTextLightSolid, token.colorPrimaryBg];
 
-  // 应用标题动画效果
-  useTitleAnimation([cscRef, siteRef], colors, {
+  useTitleAnimation([cscRef, siteRef], titleColors, {
     duration: 0.6,
     jumpHeight: -15,
     delay: 0.15,
@@ -99,21 +98,23 @@ function AppLayout() {
           </Button>
         </Space>
       </Header>
-      <Layout>
+      <div className={styles.bodyWrap}>
         <Sider width={200} className={styles.sider}>
-          <Menu
-            mode="inline"
-            selectedKeys={selectedKeys}
-            items={menuItems}
-            onClick={handleMenuClick}
-            className={styles.menu}
-          />
+          <div className={styles.siderInner}>
+            <Menu
+              mode="inline"
+              selectedKeys={selectedKeys}
+              items={menuItems}
+              onClick={handleMenuClick}
+              className={styles.menu}
+            />
+            <Footer className={styles.footer}>Footer © 2026 CSC Site</Footer>
+          </div>
         </Sider>
         <Content className={styles.content}>
           <Outlet />
         </Content>
-      </Layout>
-      <Footer className={styles.footer}>Footer © 2026 CSC Site</Footer>
+      </div>
     </Layout>
   );
 }

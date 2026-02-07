@@ -155,3 +155,4 @@ export default NewPage;
 4. **路径别名**: 使用 `@/` 导入，不要使用相对路径
 5. **类型导入**: 使用 `import type` 导入类型
 6. **路由懒加载**: 使用 `React.lazy` 和 `LazyRoute` 组件
+7. **页面内弹框（Modal）**: 居正中（`centered`）、body 最大高度 80vh（`styles.body`）、确认/取消使用弹框自带按钮（`onOk`/`onCancel`、`okText`/`cancelText`），详见 `.cursor/rules/antd.mdc` 弹框（Modal）章节
