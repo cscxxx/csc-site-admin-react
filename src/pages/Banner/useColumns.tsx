@@ -92,11 +92,7 @@ export function useColumns(props: BannerColumnsProps): ColumnsType<BannerItem> {
         width: 120,
         fixed: 'right',
         render: (_, record) => (
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => onEdit(record)}
-          >
+          <Button type="link" icon={<EditOutlined />} onClick={() => onEdit(record)}>
             编辑
           </Button>
         ),

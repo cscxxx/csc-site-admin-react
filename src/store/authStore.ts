@@ -1,34 +1,37 @@
 /**
  * 认证状态管理 Store
- *
- * 使用 Zustand 管理应用的认证状态，包括登录状态和 token
- *
- * 特性：
- * - 使用 persist middleware 实现状态持久化，存储在 localStorage
- * - 存储键名：csc-site-admin-token
- * - 支持多标签页同步：通过监听 storage 事件实现
- * - Token 格式：Bearer {token}
- *
- * 使用示例：
- * ```ts
- * // 登录
- * const login = useAuthStore((state) => state.login);
- * login('your-token');
- *
- * // 登出
- * const logout = useAuthStore((state) => state.logout);
- * logout();
- *
- * // 获取认证状态
- * const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
- * const token = useAuthStore((state) => state.token);
- * ```
+ * 本地只存 token 字符串（如 eyJhbGci...），不存任何对象
  *
  * @module store/authStore
  */
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+
+const TOKEN_KEY = 'csc-site-admin-token';
+
+/** 仅存 token 字符串：写入只写 token，读取只读 token（persist 所需格式仅在内存中拼给库用，不写入） */
+const tokenOnlyStorage = createJSONStorage(() => {
+  const toPersistFormat = (token: string | null) =>
+    JSON.stringify({ state: { token, isAuthenticated: !!token }, version: 0 });
+  if (typeof localStorage === 'undefined') {
+    return { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+  }
+  return {
+    getItem: (name: string) => {
+      const raw = localStorage.getItem(name);
+      return raw === null ? null : toPersistFormat(raw === '' ? null : raw);
+    },
+    setItem: (name: string, value: string) => {
+      const token =
+        (JSON.parse(value) as { state?: { token?: string | null } })?.state?.token ?? '';
+      const s = typeof token === 'string' ? token : '';
+      if (s) localStorage.setItem(name, s);
+      else localStorage.removeItem(name);
+    },
+    removeItem: (name: string) => localStorage.removeItem(name),
+  };
+});
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -46,18 +49,15 @@ export const useAuthStore = create<AuthState>()(
       logout: () => set({ token: null, isAuthenticated: false }),
     }),
     {
-      name: 'csc-site-admin-token',
-      storage: createJSONStorage(() => localStorage),
-      // 多标签页同步：persist middleware 会自动处理 storage 事件
+      name: TOKEN_KEY,
+      storage: tokenOnlyStorage,
     }
   )
 );
 
-// 监听 storage 事件以实现多标签页同步
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', e => {
-    if (e.key === 'csc-site-admin-token' && e.newValue) {
-      // Zustand persist middleware 会自动处理，这里可以添加额外的同步逻辑
+    if (e.key === TOKEN_KEY && e.newValue !== undefined) {
       useAuthStore.persist.rehydrate();
     }
   });

@@ -470,7 +470,20 @@ export function createRequest(config?: RequestConfig): Request {
  *   console.error(error);
  * });
  */
+import { useAuthStore } from '@/store';
+
 const request = new Request();
+
+// 请求头统一添加 Authorization: Bearer <token>
+request.interceptors.request.use(config => {
+  const token = useAuthStore.getState().token;
+  if (token) {
+    const authValue = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+    config.headers = new Headers(config.headers);
+    config.headers.set('Authorization', authValue);
+  }
+  return config;
+});
 
 // 添加默认的错误拦截器，统一处理请求错误
 request.interceptors.error.use(createRequestErrorInterceptor());

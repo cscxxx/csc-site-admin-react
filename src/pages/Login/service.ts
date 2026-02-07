@@ -42,9 +42,12 @@ export async function login(params: LoginParams): Promise<{
   const { promise } = request.post<LoginResponse>('/api/admin/login', params);
   const response = await promise;
 
-  // 从响应头获取 authentication
-  const authentication = response.headers.get('authentication') || '';
-  const token = authentication ? `Bearer ${authentication}` : '';
+  // 从响应头获取 token（仅保存原始值，不含 Bearer 前缀）
+  const authHeader =
+    response.headers.get('authentication') ||
+    response.headers.get('Authorization') ||
+    '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
 
   return {
     response: response.data,

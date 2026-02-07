@@ -1,0 +1,90 @@
+@import '@/styles/variables.less';
+
+/* 上传区与预览区统一尺寸，避免切换时大小不一致 */
+@upload-size: 160px;
+
+.wrapper {
+  display: inline-block;
+  width: @upload-size;
+}
+
+.preview {
+  position: relative;
+  width: @upload-size;
+  height: @upload-size;
+  border: 1px dashed @border-color-base;
+  border-radius: @border-radius-base;
+  overflow: hidden;
+  background: @bg-container;
+
+  &:hover .remove {
+    opacity: 1;
+  }
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.dragger {
+  width: @upload-size !important;
+  height: @upload-size !important;
+  margin: 0 !important;
+
+  :global(.ant-upload-drag) {
+    width: 100%;
+    height: 100%;
+    min-height: @upload-size;
+    padding: @spacing-md;
+    border-radius: @border-radius-base;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.placeholderIcon {
+  margin: 0 0 4px;
+  font-size: 32px;
+  color: @text-color-secondary;
+}
+
+.placeholderText {
+  margin: 0 0 2px;
+  color: @text-color-secondary;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.placeholderHint {
+  margin: 0;
+  color: @text-color-secondary;
+  font-size: 11px;
+  text-align: center;
+}

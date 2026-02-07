@@ -3,7 +3,8 @@
  */
 
 import { useEffect } from 'react';
-import { Modal, Form, Input, Button, Space, App } from 'antd';
+import { Modal, Form, Input, Button, Row, Col, App } from 'antd';
+import { ImageUpload } from '@/components/upload';
 import type { BannerFormData, EditModalProps } from '../types';
 import styles from '../index.module.less';
 
@@ -44,57 +45,51 @@ function EditModal(props: EditModalProps) {
   };
 
   return (
-    <Modal
-      title="编辑 Banner"
-      open={open}
-      onCancel={handleCancel}
-      footer={null}
-      width={600}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        className={styles.modalForm}
-      >
-        <Form.Item
-          label="中等图片地址"
-          name="midImg"
-          rules={[{ required: true, message: '请输入中等图片地址' }]}
-        >
-          <Input placeholder="请输入中等图片地址" />
-        </Form.Item>
-        <Form.Item
-          label="大图地址"
-          name="bigImg"
-          rules={[{ required: true, message: '请输入大图地址' }]}
-        >
-          <Input placeholder="请输入大图地址" />
-        </Form.Item>
-        <Form.Item
-          label="标题"
-          name="title"
-          rules={[{ required: true, message: '请输入标题' }]}
-        >
-          <Input placeholder="请输入标题" />
-        </Form.Item>
-        <Form.Item
-          label="描述"
-          name="description"
-          rules={[{ required: true, message: '请输入描述' }]}
-        >
-          <Input.TextArea
-            placeholder="请输入描述"
-            rows={4}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Space>
-            <Button type="primary" htmlType="submit" loading={submitting}>
-              提交
-            </Button>
-            <Button onClick={handleCancel}>取消</Button>
-          </Space>
+    <Modal title="编辑 Banner" open={open} onCancel={handleCancel} footer={null} width={640}>
+      <Form form={form} layout="vertical" onFinish={handleSubmit} className={styles.modalForm}>
+        <div className={styles.formSection}>
+          <div className={styles.sectionLabel}>Banner 图片</div>
+          <Row gutter={24}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                label="中等尺寸"
+                name="midImg"
+                rules={[{ required: true, message: '请上传中等图片' }]}
+                getValueFromEvent={(url: string | null) => url ?? ''}
+              >
+                <ImageUpload placeholder="点击或拖拽上传" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                label="大尺寸"
+                name="bigImg"
+                rules={[{ required: true, message: '请上传大图' }]}
+                getValueFromEvent={(url: string | null) => url ?? ''}
+              >
+                <ImageUpload placeholder="点击或拖拽上传" />
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
+        <div className={styles.formSection}>
+          <div className={styles.sectionLabel}>文案</div>
+          <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
+            <Input placeholder="请输入标题" />
+          </Form.Item>
+          <Form.Item
+            label="描述"
+            name="description"
+            rules={[{ required: true, message: '请输入描述' }]}
+          >
+            <Input.TextArea placeholder="请输入描述" rows={4} />
+          </Form.Item>
+        </div>
+        <Form.Item className={styles.formActions}>
+          <Button onClick={handleCancel}>取消</Button>
+          <Button type="primary" htmlType="submit" loading={submitting}>
+            提交
+          </Button>
         </Form.Item>
       </Form>
     </Modal>
