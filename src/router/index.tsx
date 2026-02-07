@@ -30,6 +30,9 @@ const Mock = lazy(() => import('@/pages/Mock'));
 const Performance = lazy(() => import('@/pages/Performance'));
 const Banner = lazy(() => import('@/pages/Banner'));
 const Admin = lazy(() => import('@/pages/Admin'));
+const About = lazy(() => import('@/pages/About'));
+const Message = lazy(() => import('@/pages/Message'));
+const Project = lazy(() => import('@/pages/Project'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -82,6 +85,18 @@ export const router = createBrowserRouter([
       {
         path: 'banner',
         element: <LazyRoute component={Banner} />,
+      },
+      {
+        path: 'about',
+        element: <LazyRoute component={About} />,
+      },
+      {
+        path: 'message',
+        element: <LazyRoute component={Message} />,
+      },
+      {
+        path: 'project',
+        element: <LazyRoute component={Project} />,
       },
     ],
   },

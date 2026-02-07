@@ -1,4 +1,4 @@
-@import '../../styles/variables.less';
+@import '@/styles/variables.less';
 
 .pageContainer {
   padding: @spacing-md;
@@ -12,4 +12,19 @@
 
 .settingsCard {
   margin-bottom: @spacing-md;
+}
+
+.formSection {
+  margin-bottom: @spacing-lg;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.sectionLabel {
+  margin-bottom: @spacing-sm;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: @font-size-md;
 }

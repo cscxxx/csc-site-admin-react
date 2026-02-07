@@ -12,6 +12,9 @@ import {
   SettingOutlined,
   ApiOutlined,
   BarChartOutlined,
+  InfoCircleOutlined,
+  MessageOutlined,
+  ProjectOutlined,
 } from '@ant-design/icons';
 
 export function useSideMenu(): MenuProps['items'] {
@@ -36,6 +39,21 @@ export function useSideMenu(): MenuProps['items'] {
         key: '/settings',
         icon: <SettingOutlined />,
         label: '设置',
+      },
+      {
+        key: '/about',
+        icon: <InfoCircleOutlined />,
+        label: '关于',
+      },
+      {
+        key: '/message',
+        icon: <MessageOutlined />,
+        label: '留言板管理',
+      },
+      {
+        key: '/project',
+        icon: <ProjectOutlined />,
+        label: '示例项目',
       },
       {
         key: '/mock',
