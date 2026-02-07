@@ -12,6 +12,14 @@ alwaysApply: true
 - 类型定义放在 `src/types/` 或与文件同目录的 `types.ts`
 - Store 放在 `src/store/` 目录
 
+## 配置与逻辑抽离（use* 形式）
+- 菜单项、表格列、列表配置等与页面主逻辑分离，抽离为自定义 Hook，便于维护
+- **文件命名**：短横线分割（kebab-case），如 `use-header-menu.tsx`、`use-side-menu.tsx`、`use-columns.tsx`
+- **Hook 命名**：camelCase，以 `use` 开头，如 `useHeaderMenu`、`useSideMenu`、`useColumns`
+- **扩展名**：含 JSX 时用 `.tsx`，仅类型/逻辑用 `.ts`
+- **引用**：若项目开启 `allowImportingTsExtensions`，导入时写完整扩展名（如 `./use-header-menu.tsx`），避免解析到错误文件
+- 抽离文件与使用方同目录或按功能放在子目录（如 `pages/Banner/use-columns.tsx`）
+
 ## 样式文件
 - 使用 Less 模块化样式（`.module.less`）
 - 样式文件与组件文件同名

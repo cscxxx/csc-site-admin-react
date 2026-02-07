@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Input, Button, Card, App, theme, Space, Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store';
+import { useAuthStore, useSettingStore } from '@/store';
 import { getCaptcha, login } from './service';
+import { getSetting } from '@/pages/Settings/service';
 import styles from './index.module.less';
 
 function Login() {
   const navigate = useNavigate();
   const setAuth = useAuthStore(state => state.login);
+  const setSetting = useSettingStore(state => state.setSetting);
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const { message } = App.useApp();
@@ -51,6 +53,12 @@ function Login() {
 
       if (response.code === 0 && token) {
         setAuth(token);
+        try {
+          const settingData = await getSetting();
+          setSetting(settingData);
+        } catch {
+          message.warning('登录成功，但获取设置信息失败');
+        }
         message.success('登录成功！');
         navigate('/dashboard', { replace: true });
       } else {
@@ -120,7 +128,7 @@ function Login() {
           </Form.Item>
 
           <Form.Item>
-            <Space direction="vertical" style={{ width: '100%' }}>
+            <Space orientation="vertical" style={{ width: '100%' }}>
               <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 0 }}>
                 <Checkbox>记住我（7天）</Checkbox>
               </Form.Item>

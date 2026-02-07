@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Table, App } from 'antd';
 import { getBannerList, updateBannerList } from './service';
-import { useColumns } from './useColumns';
+import { useColumns } from './use-columns.tsx';
 import EditModal from './useEditModal';
 import type { BannerItem, BannerSubmitItem } from '@/types';
 import type { BannerFormData } from './types';

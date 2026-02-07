@@ -38,6 +38,28 @@
   width: 0.5em;
 }
 
+.headerUserTrigger {
+  cursor: pointer;
+  padding: @spacing-xs @spacing-sm;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: @border-radius-base;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.headerAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
 .bodyWrap {
   margin-top: @header-height;
   display: flex;

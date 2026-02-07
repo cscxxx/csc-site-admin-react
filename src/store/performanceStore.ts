@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 import type { VitalMetric, PerformanceRecord } from '@/types';
 import { getPerformanceHistory, clearPerformanceHistory } from '@/utils/performance/vitals';
 
@@ -18,20 +19,25 @@ interface PerformanceState {
   clearHistory: () => void;
 }
 
-export const usePerformanceStore = create<PerformanceState>(set => ({
-  currentMetrics: {},
-  history: getPerformanceHistory(),
+export const usePerformanceStore = create<PerformanceState>()(
+  devtools(
+    set => ({
+      currentMetrics: {},
+      history: getPerformanceHistory(),
 
-  updateMetrics: metrics => {
-    set({ currentMetrics: metrics });
-  },
+      updateMetrics: metrics => {
+        set({ currentMetrics: metrics });
+      },
 
-  refreshHistory: () => {
-    set({ history: getPerformanceHistory() });
-  },
+      refreshHistory: () => {
+        set({ history: getPerformanceHistory() });
+      },
 
-  clearHistory: () => {
-    clearPerformanceHistory();
-    set({ history: [] });
-  },
-}));
+      clearHistory: () => {
+        clearPerformanceHistory();
+        set({ history: [] });
+      },
+    }),
+    { name: 'PerformanceStore' }
+  )
+);

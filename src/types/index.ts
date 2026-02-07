@@ -41,3 +41,6 @@ export type {
   BannerSubmitItem,
   BannerListResponse,
 } from './banner';
+
+// 设置相关类型
+export type { SettingData } from './setting';

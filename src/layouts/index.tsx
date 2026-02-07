@@ -1,17 +1,12 @@
 import { useRef } from 'react';
-import { Layout, Menu, Button, Space, theme } from 'antd';
+import { Layout, Menu, Dropdown, theme } from 'antd';
+import type { MenuProps } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import {
-  DashboardOutlined,
-  UserOutlined,
-  SettingOutlined,
-  ApiOutlined,
-  BarChartOutlined,
-  LogoutOutlined,
-  FileTextOutlined,
-} from '@ant-design/icons';
-import { useAuthStore } from '@/store';
+import { DownOutlined } from '@ant-design/icons';
+import { useAuthStore, useSettingStore } from '@/store';
 import { useTitleAnimation } from './use-anime';
+import { useHeaderMenu } from './use-header-menu.tsx';
+import { useSideMenu } from './use-side-menu.tsx';
 import styles from './index.module.less';
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -20,6 +15,8 @@ function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const logout = useAuthStore(state => state.logout);
+  const clearSetting = useSettingStore(state => state.clearSetting);
+  const setting = useSettingStore(state => state.setting);
   const { token } = theme.useToken();
 
   const cscRef = useRef<HTMLSpanElement>(null);
@@ -34,38 +31,8 @@ function AppLayout() {
     delay: 0.15,
   });
 
-  const menuItems = [
-    {
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: '仪表盘',
-    },
-    {
-      key: '/users',
-      icon: <UserOutlined />,
-      label: '用户管理',
-    },
-    {
-      key: '/banner',
-      icon: <FileTextOutlined />,
-      label: '首页标语',
-    },
-    {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: '设置',
-    },
-    {
-      key: '/mock',
-      icon: <ApiOutlined />,
-      label: 'Mock 数据',
-    },
-    {
-      key: '/performance',
-      icon: <BarChartOutlined />,
-      label: '性能监控',
-    },
-  ];
+  const menuItems = useSideMenu();
+  const headerMenuItems = useHeaderMenu();
 
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
@@ -73,11 +40,29 @@ function AppLayout() {
 
   const handleLogout = () => {
     logout();
+    clearSetting();
     navigate('/login', { replace: true });
   };
 
-  // 获取当前选中的菜单项
+  const onHeaderMenuClick: MenuProps['onClick'] = ({ key }) => {
+    if (key === 'logout') {
+      handleLogout();
+    } else if (key === 'admin') {
+      navigate('/admin');
+    } else if (key === 'settings') {
+      navigate('/settings');
+    }
+  };
+
   const selectedKeys = [location.pathname];
+
+  // 头部下拉：当前在个人中心/设置页时高亮对应菜单项
+  const headerSelectedKeys =
+    location.pathname === '/admin'
+      ? ['admin']
+      : location.pathname === '/settings'
+        ? ['settings']
+        : [];
 
   return (
     <Layout className={styles.layout}>
@@ -91,12 +76,26 @@ function AppLayout() {
             Site
           </span>
         </div>
-        <Space>
-          <span>欢迎，管理员</span>
-          <Button type="primary" icon={<LogoutOutlined />} onClick={handleLogout}>
-            退出登录
-          </Button>
-        </Space>
+        <Dropdown
+          trigger={['hover']}
+          popupRender={() => (
+            <Menu
+              selectedKeys={headerSelectedKeys}
+              items={headerMenuItems}
+              onClick={onHeaderMenuClick}
+              style={{ minWidth: 160 }}
+            />
+          )}
+        >
+          <span className={styles.headerUserTrigger} style={{ color: token.colorTextLightSolid }}>
+            {setting?.avatar ? (
+              <img src={setting.avatar} alt="头像" className={styles.headerAvatar} />
+            ) : (
+              <span>欢迎，管理员</span>
+            )}
+            <DownOutlined />
+          </span>
+        </Dropdown>
       </Header>
       <div className={styles.bodyWrap}>
         <Sider width={200} className={styles.sider}>
@@ -108,7 +107,7 @@ function AppLayout() {
               onClick={handleMenuClick}
               className={styles.menu}
             />
-            <Footer className={styles.footer}>Footer © 2026 CSC Site</Footer>
+            <Footer className={styles.footer}>{setting?.icp ?? 'Footer © 2026 CSC Site'}</Footer>
           </div>
         </Sider>
         <Content className={styles.content}>

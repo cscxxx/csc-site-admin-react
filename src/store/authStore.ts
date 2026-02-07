@@ -6,7 +6,7 @@
  */
 
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 
 const TOKEN_KEY = 'csc-site-admin-token';
 
@@ -19,12 +19,15 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    set => ({
-      isAuthenticated: false,
-      token: null,
-      login: token => set({ token, isAuthenticated: true }),
-      logout: () => set({ token: null, isAuthenticated: false }),
-    }),
+    devtools(
+      set => ({
+        isAuthenticated: false,
+        token: null,
+        login: token => set({ token, isAuthenticated: true }),
+        logout: () => set({ token: null, isAuthenticated: false }),
+      }),
+      { name: 'AuthStore' }
+    ),
     {
       name: TOKEN_KEY,
       storage: createJSONStorage(() => localStorage),
