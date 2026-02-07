@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { Layout, Menu, Dropdown, theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
@@ -35,7 +35,10 @@ function AppLayout() {
   const headerMenuItems = useHeaderMenu();
 
   const handleMenuClick = ({ key }: { key: string }) => {
-    navigate(key);
+    // 仅对带路径的叶子项导航，父项（如 article）点击只展开/收起，不跳转
+    if (key.startsWith('/')) {
+      navigate(key);
+    }
   };
 
   const handleLogout = () => {
@@ -54,16 +57,22 @@ function AppLayout() {
     }
   };
 
-  const selectedKeys = [location.pathname];
+  // /blog/edit 或 /blog/edit/:id 时高亮「新增与编辑文章」
+  const selectedKeys =
+    location.pathname === '/blog/edit' || location.pathname.startsWith('/blog/edit/')
+      ? ['/blog/edit']
+      : [location.pathname];
 
-  // 侧栏子菜单展开：根据当前路径推导，在 blogtype/blog 下展开「文章管理」
-  const openKeys = useMemo(
+  // 侧栏子菜单展开：路径在 blogtype/blog 下时强制展开「文章管理」；否则用用户点击的展开状态
+  const pathnameOpenKeys = useMemo(
     () =>
       location.pathname.startsWith('/blogtype') || location.pathname.startsWith('/blog')
         ? ['article']
         : [],
     [location.pathname]
   );
+  const [userOpenKeys, setUserOpenKeys] = useState<string[]>([]);
+  const openKeys = pathnameOpenKeys.length > 0 ? pathnameOpenKeys : userOpenKeys;
 
   // 头部下拉：当前在个人中心/设置页时高亮对应菜单项
   const headerSelectedKeys =
@@ -113,6 +122,7 @@ function AppLayout() {
               mode="inline"
               selectedKeys={selectedKeys}
               openKeys={openKeys}
+              onOpenChange={setUserOpenKeys}
               items={menuItems}
               onClick={handleMenuClick}
               className={styles.menu}

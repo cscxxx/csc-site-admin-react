@@ -35,6 +35,7 @@ const Message = lazy(() => import('@/pages/Message'));
 const Project = lazy(() => import('@/pages/Project'));
 const Blogtype = lazy(() => import('@/pages/Blogtype/index.tsx'));
 const Blog = lazy(() => import('@/pages/Blog/index.tsx'));
+const BlogEditPage = lazy(() => import('@/pages/Blog/BlogEditPage/index.tsx'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 export const router = createBrowserRouter([
@@ -107,6 +108,14 @@ export const router = createBrowserRouter([
       {
         path: 'blog',
         element: <LazyRoute component={Blog} />,
+      },
+      {
+        path: 'blog/edit',
+        element: <LazyRoute component={BlogEditPage} />,
+      },
+      {
+        path: 'blog/edit/:id',
+        element: <LazyRoute component={BlogEditPage} />,
       },
     ],
   },

@@ -63,6 +63,7 @@ export function useSideMenu(): MenuProps['items'] {
         children: [
           { key: '/blogtype', label: '文章分类' },
           { key: '/blog', label: '文章列表' },
+          { key: '/blog/edit', label: '新增与编辑文章' },
         ],
       },
       {

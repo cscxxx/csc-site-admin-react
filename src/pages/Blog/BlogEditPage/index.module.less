@@ -1,0 +1,110 @@
+@import '@/styles/variables.less';
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: @spacing-md;
+  overflow: hidden;
+}
+
+.pageTitle {
+  flex-shrink: 0;
+  margin-bottom: @spacing-md;
+  font-size: @font-size-xl;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.metaCard {
+  flex-shrink: 0;
+  margin-bottom: @spacing-md;
+
+  :global(.ant-card-body) {
+    padding: @spacing-md;
+  }
+}
+
+.footerCard {
+  flex-shrink: 0;
+  margin-top: @spacing-md;
+
+  :global(.ant-card-body) {
+    padding: @spacing-md;
+  }
+}
+
+.footerRow {
+  display: flex;
+  gap: @spacing-md;
+  margin-bottom: @spacing-md;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.categoryItem {
+  width: 160px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.thumbItem {
+  width: 120px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.contentCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  overflow: hidden;
+
+  :global(.ant-card-body) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: @spacing-md;
+  }
+}
+
+.htmlContentItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+
+  :global(.ant-form-item-control-input-content) {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+}
+
+.htmlContentTextarea {
+  flex: 1;
+  min-height: 280px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.formActions {
+  flex-shrink: 0;
+  margin-top: @spacing-md;
+}
