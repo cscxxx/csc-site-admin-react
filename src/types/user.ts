@@ -48,6 +48,8 @@ export interface LoginResponseData {
   loginId: string;
   /** 用户名称 */
   name: string;
+  /** 头像 URL（可选，Mock 等场景使用） */
+  avatar?: string;
 }
 
 /**

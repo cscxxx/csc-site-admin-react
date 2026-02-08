@@ -20,12 +20,12 @@ alwaysApply: true
 - **引用**：若项目开启 `allowImportingTsExtensions`，导入时写完整扩展名（如 `./use-header-menu.tsx`），避免解析到错误文件
 - 抽离文件与使用方同目录或按功能放在子目录（如 `pages/Banner/use-columns.tsx`）
 
-## 样式文件
-- 使用 Less 模块化样式（`.module.less`）
-- 样式文件与组件文件同名
-- 导入样式：`import styles from './index.module.less'`
-- 使用类名：`className={styles.container}`
-- 全局样式变量从 `@/styles/variables.less` 导入
+## 样式（Tailwind CSS）
+- **统一使用 Tailwind CSS** 编写简单样式，直接在 JSX 上使用 `className` 工具类
+- 布局与间距：`flex`、`grid`、`gap-*`、`p-*`、`m-*`、`w-full`、`min-w-0` 等
+- 响应式：`max-md:*`、`max-sm:*` 等断点前缀
+- 仅在需要复杂选择器、主题变量或与 Ant Design 深度定制时，才使用 Less 模块（`.module.less`），且与组件同名、`import styles from './index.module.less'`
+- 全局设计变量仍可参考 `@/styles/variables.less`
 
 ## 命名规范
 - 组件：PascalCase（`UserProfile`）

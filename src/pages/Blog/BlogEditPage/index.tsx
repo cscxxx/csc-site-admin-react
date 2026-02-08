@@ -6,8 +6,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Select, Button, App } from 'antd';
+import { Card, Form, Input, Select, Button, App, Space } from 'antd';
 import { ImageUpload } from '@/components/upload';
+import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { getBlog, addBlog, updateBlog } from '../service';
 import { getBlogtypeList } from '@/pages/Blogtype/service';
 import type { BlogtypeItem } from '@/pages/Blogtype/types';
@@ -123,32 +124,29 @@ function BlogEditPage() {
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}>{isNew ? '新增文章' : '编辑文章'}</h1>
       <Form form={form} layout="vertical" className={styles.form}>
-        <Card className={styles.metaCard} loading={loading}>
-          <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
-            <Input placeholder="请输入标题" />
-          </Form.Item>
-        </Card>
+        <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
+          <Input placeholder="请输入标题" />
+        </Form.Item>
         <Card className={styles.contentCard} loading={loading}>
           <Form.Item
-            label="正文（HTML）"
+            label="正文"
             name="htmlContent"
             rules={[{ required: true, message: '请输入正文' }]}
             className={styles.htmlContentItem}
           >
-            <Input.TextArea
-              placeholder="Markdown 转成的 HTML 字符串"
-              className={styles.htmlContentTextarea}
-            />
+            <MarkdownEditor placeholder="支持 Markdown，可粘贴或上传图片" />
           </Form.Item>
         </Card>
         <Card className={styles.footerCard} loading={loading}>
           <div className={styles.footerRow}>
             <Form.Item
-              label="描述"
-              name="description"
-              rules={[{ required: true, message: '请输入描述' }]}
+              label="缩略图"
+              name="thumb"
+              rules={[{ required: true, message: '请上传缩略图' }]}
+              getValueFromEvent={(url: string | null) => url ?? ''}
+              className={styles.thumbItem}
             >
-              <Input.TextArea placeholder="请输入描述" rows={2} />
+              <ImageUpload placeholder="缩略图" />
             </Form.Item>
             <Form.Item
               label="分类"
@@ -162,22 +160,22 @@ function BlogEditPage() {
                 style={{ width: '100%' }}
               />
             </Form.Item>
+
             <Form.Item
-              label="缩略图"
-              name="thumb"
-              rules={[{ required: true, message: '请上传缩略图' }]}
-              getValueFromEvent={(url: string | null) => url ?? ''}
-              className={styles.thumbItem}
+              label="描述"
+              name="description"
+              rules={[{ required: true, message: '请输入描述' }]}
+              className="flex-1 min-w-0"
             >
-              <ImageUpload placeholder="缩略图" />
+              <Input.TextArea placeholder="请输入描述" rows={7} />
             </Form.Item>
           </div>
-          <div className={styles.formActions}>
+          <Space>
             <Button onClick={handleBack}>返回</Button>
             <Button type="primary" onClick={handleSubmit} loading={submitting}>
               {isNew ? '新增' : '保存'}
             </Button>
-          </div>
+          </Space>
         </Card>
       </Form>
     </div>
