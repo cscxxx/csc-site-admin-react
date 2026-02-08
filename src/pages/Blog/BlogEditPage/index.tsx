@@ -4,9 +4,11 @@
  * 创建时间：仅新增时传当前时间戳，编辑不传，页面不展示，仅表格展示
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Form, Input, Select, Button, App, Space } from 'antd';
+import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { ImageUpload } from '@/components/upload';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { getBlog, addBlog, updateBlog } from '../service';
@@ -34,6 +36,8 @@ function BlogEditPage() {
   const [categories, setCategories] = useState<BlogtypeItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const fullscreenRef = useRef<HTMLDivElement>(null);
 
   const loadCategories = useCallback(async () => {
     try {
@@ -120,9 +124,18 @@ function BlogEditPage() {
 
   const categoryOptions = categories.map(c => ({ value: c.id, label: c.name }));
 
-  return (
-    <div className={styles.pageContainer}>
-      <h1 className={styles.pageTitle}>{isNew ? '新增文章' : '编辑文章'}</h1>
+  const pageContent = (
+    <>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>{isNew ? '新增文章' : '编辑文章'}</h1>
+        <Button
+          type="text"
+          icon={fullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+          onClick={() => setFullscreen(prev => !prev)}
+          title={fullscreen ? '退出全屏' : '全屏'}
+          className={styles.fullscreenBtn}
+        />
+      </div>
       <Form form={form} layout="vertical" className={styles.form}>
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input placeholder="请输入标题" />
@@ -158,6 +171,11 @@ function BlogEditPage() {
                 placeholder="请选择分类"
                 options={categoryOptions}
                 style={{ width: '100%' }}
+                getPopupContainer={
+                  fullscreen
+                    ? () => fullscreenRef.current ?? document.body
+                    : undefined
+                }
               />
             </Form.Item>
 
@@ -178,8 +196,25 @@ function BlogEditPage() {
           </Space>
         </Card>
       </Form>
+    </>
+  );
+
+  const container = (
+    <div className={`${styles.pageContainer} ${fullscreen ? styles.fullscreen : ''}`}>
+      {pageContent}
     </div>
   );
+
+  if (fullscreen && typeof document !== 'undefined') {
+    return createPortal(
+      <div ref={fullscreenRef} className={styles.fullscreenPortal}>
+        {container}
+      </div>,
+      document.body
+    );
+  }
+
+  return container;
 }
 
 export default BlogEditPage;

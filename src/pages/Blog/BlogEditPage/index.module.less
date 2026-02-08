@@ -3,22 +3,52 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   padding: @spacing-md;
-  overflow: hidden;
+  /* 不限制高度与 overflow，让内容自然增高，由 Layout Content 的滚动条滚动 */
+}
+
+.pageHeader {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: @spacing-md;
+  margin-bottom: @spacing-md;
 }
 
 .pageTitle {
-  flex-shrink: 0;
-  margin-bottom: @spacing-md;
+  margin: 0;
   font-size: @font-size-xl;
   font-weight: bold;
+}
+
+.fullscreenBtn {
+  flex-shrink: 0;
+}
+
+/* 全屏模式：通过 Portal 挂到 body，避免被布局的 overflow/stacking 限制 */
+.fullscreenPortal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--ant-color-bg-container, #fff);
+  overflow: auto;
+}
+
+.pageContainer.fullscreen {
+  height: 100%;
+  min-height: 100%;
+  padding: @spacing-md;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 0 auto;
   min-height: 0;
 }
 
@@ -69,31 +99,20 @@
 }
 
 .contentCard {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  flex: 1 0 auto;
   min-height: 320px;
-  overflow: hidden;
+  /* 不设 overflow，让卡片随编辑器内容增高，由 Content 滚动 */
 
   :global(.ant-card-body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
     padding: @spacing-md;
   }
 }
 
 .htmlContentItem {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 0;
 
   :global(.ant-form-item-control-input-content) {
-    flex: 1;
-    display: flex;
-    min-height: 0;
+    display: block;
   }
 }
 

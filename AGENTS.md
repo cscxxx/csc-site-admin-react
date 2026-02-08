@@ -1,6 +1,6 @@
 # Project Instructions
 
-本项目使用 React 19 + Ant Design v6 + TypeScript 5.9 技术栈。
+本项目使用 React 19 + Ant Design v6 + TypeScript 5.9 技术栈，并使用 ahooks 作为 Hooks 工具库（异步请求、防抖节流等优先使用 ahooks）。
 
 ## 核心原则
 

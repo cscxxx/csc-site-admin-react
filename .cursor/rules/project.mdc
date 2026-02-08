@@ -12,6 +12,7 @@ alwaysApply: true
 - TypeScript 5.9.3
 - React Router DOM 7.13.0
 - Zustand 5.0.11
+- ahooks（Hooks 工具库）
 - Vite
 - Tailwind CSS 4（简单样式统一用 utility class）；必要时 Less 模块化
 
@@ -29,6 +30,13 @@ alwaysApply: true
 - 使用 `LazyRoute` 组件包装懒加载路由
 - 受保护路由使用 `ProtectedRoute` 组件
 - 使用 `useNavigate` Hook 进行编程式导航
+
+## ahooks 使用
+
+- 异步请求、列表加载等优先使用 `useRequest`，配合 `@/utils/request` 与 `service.ts` 中的 API 函数
+- 防抖、节流使用 `useDebounceFn`、`useThrottleFn`，避免手写 setTimeout/setInterval
+- 其他场景按需使用：`useDebounce`/`useThrottle`（值）、`useMemoizedFn`（稳定回调）、`useMount`/`useUnmount` 等
+- 从 `ahooks` 按需导入，例如：`import { useRequest, useDebounceFn } from 'ahooks'`
 
 ## 请求处理
 
