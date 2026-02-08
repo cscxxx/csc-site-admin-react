@@ -63,9 +63,30 @@ function ensureCodeBlockLanguage(markdown: string): string {
 }
 
 /**
+ * 转义 Markdown 中会被解析为 HTML 的“标签形”文本（如 &lt;!DOCTYPE&gt; 转成 <!DOCTYPE> 后会被当成标签）
+ * 只处理代码块外的内容，避免破坏围栏代码块
+ */
+function escapeTagLikeInMarkdown(markdown: string): string {
+  const parts = markdown.split(/(```[\s\S]*?```)/g);
+  return parts
+    .map(part => {
+      if (part.startsWith('```') && part.endsWith('```')) return part;
+      return part.replace(/<(![^>]*?)>/g, '\\<$1\\>');
+    })
+    .join('');
+}
+
+/**
  * 将 HTML 转为 Markdown（用于编辑器回显）
  */
 export function htmlToMarkdown(html: string): string {
-  const markdown = html ? turndownService.turndown(html) : '';
-  return ensureCodeBlockLanguage(markdown);
+  if (!html) return '';
+  try {
+    const markdown = turndownService.turndown(html);
+    const withCodeLang = ensureCodeBlockLanguage(markdown);
+    return escapeTagLikeInMarkdown(withCodeLang);
+  } catch (err) {
+    console.error('[htmlToMarkdown] 转换失败:', err);
+    return '';
+  }
 }

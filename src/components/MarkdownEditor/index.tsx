@@ -3,7 +3,7 @@
  * 图片走服务端上传（与 @/components/upload 同接口），粘贴/拖拽/工具栏插入均上传后插入 URL
  */
 
-import { useEffect, useRef, useCallback, useMemo, memo } from 'react';
+import { useEffect, useRef, useCallback, useMemo, memo, useState } from 'react';
 import { App } from 'antd';
 import {
   MDXEditor,
@@ -77,6 +77,7 @@ function MarkdownEditorInner({
   const { message } = App.useApp();
   const editorRef = useRef<MDXEditorMethods | null>(null);
   const lastHtmlRef = useRef<string | undefined>(undefined);
+  const [editorReady, setEditorReady] = useState(false);
 
   const uploadHandler = useCallback(
     async (file: File): Promise<string> => {
@@ -125,12 +126,22 @@ function MarkdownEditorInner({
     [uploadHandler]
   );
 
+  const setRef = useCallback((r: MDXEditorMethods | null) => {
+    editorRef.current = r;
+    if (r) setEditorReady(true);
+  }, []);
+
   useEffect(() => {
+    if (!editorRef.current) return;
     if (lastHtmlRef.current !== undefined && value === lastHtmlRef.current) return;
     lastHtmlRef.current = value;
-    const markdown = htmlToMarkdown(value);
-    editorRef.current?.setMarkdown(markdown);
-  }, [value]);
+    try {
+      const markdown = htmlToMarkdown(value ?? '');
+      editorRef.current.setMarkdown(markdown);
+    } catch (err) {
+      console.error('[MarkdownEditor] setMarkdown 失败:', err);
+    }
+  }, [value, editorReady]);
 
   const handleChange = useCallback(
     (markdown: string) => {
@@ -156,8 +167,8 @@ function MarkdownEditorInner({
     <div className={['w-full', className].filter(Boolean).join(' ')} style={wrapperStyle}>
       <div className={innerClass}>
         <MDXEditor
-          ref={editorRef}
-          markdown=""
+          ref={setRef}
+          markdown={htmlToMarkdown(value ?? '')}
           onChange={handleChange}
           plugins={plugins}
           placeholder={placeholder}

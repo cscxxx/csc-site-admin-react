@@ -12,12 +12,38 @@ import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { ImageUpload } from '@/components/upload';
 import { getBlog, addBlog, updateBlog } from '../service';
 import { getBlogtypeList } from '@/pages/Blogtype/service';
+import type { BlogItem } from '../types';
 import type { BlogtypeItem } from '@/pages/Blogtype/types';
 import styles from './index.module.less';
+
+/** 按 editId 缓存进行中的 getBlog 请求，避免 React Strict Mode 下 effect 双执行导致重复请求 */
+const getBlogPromiseCache = new Map<number, Promise<BlogItem>>();
 
 const MarkdownEditor = lazy(() =>
   import('@/components/MarkdownEditor').then(m => ({ default: m.MarkdownEditor }))
 );
+
+/** 包装编辑器并转发 Form.Item 注入的 value/onChange（Form.Item 直接子节点才能收到） */
+function BlogEditorField({
+  value,
+  onChange,
+  ...rest
+}: {
+  value?: string;
+  onChange?: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <Suspense fallback={<Spin style={{ padding: 24 }} tip="加载编辑器中…" />}>
+      <MarkdownEditor
+        value={value ?? ''}
+        onChange={onChange ?? (() => {})}
+        placeholder="支持 Markdown，可粘贴或上传图片"
+        {...rest}
+      />
+    </Suspense>
+  );
+}
 
 interface BlogFormValues {
   title: string;
@@ -40,6 +66,7 @@ function BlogEditPage() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [editorKey, setEditorKey] = useState(0);
   const fullscreenRef = useRef<HTMLDivElement>(null);
 
   const loadCategories = useCallback(async () => {
@@ -59,7 +86,16 @@ function BlogEditPage() {
     if (!isNew && editId != null) {
       let cancelled = false;
       setLoading(true);
-      getBlog(editId)
+      // 复用同 editId 的进行中请求，避免 Strict Mode 下 effect 双执行导致重复请求
+      let promise = getBlogPromiseCache.get(editId);
+      if (!promise) {
+        promise = getBlog(editId);
+        getBlogPromiseCache.set(editId, promise);
+        promise.finally(() => {
+          getBlogPromiseCache.delete(editId);
+        });
+      }
+      promise
         .then(data => {
           if (!cancelled) {
             form.setFieldsValue({
@@ -69,6 +105,7 @@ function BlogEditPage() {
               htmlContent: data.htmlContent ?? '',
               thumb: data.thumb,
             });
+            setEditorKey(k => k + 1);
           }
         })
         .catch(err => {
@@ -139,7 +176,18 @@ function BlogEditPage() {
           className={styles.fullscreenBtn}
         />
       </div>
-      <Form form={form} layout="vertical" className={styles.form}>
+      <Form
+        form={form}
+        layout="vertical"
+        className={styles.form}
+        initialValues={{
+          htmlContent: '',
+          title: '',
+          description: '',
+          thumb: '',
+          categoryId: undefined,
+        }}
+      >
         <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
           <Input placeholder="请输入标题" />
         </Form.Item>
@@ -150,9 +198,7 @@ function BlogEditPage() {
             rules={[{ required: true, message: '请输入正文' }]}
             className={styles.htmlContentItem}
           >
-            <Suspense fallback={<Spin style={{ padding: 24 }} tip="加载编辑器中…" />}>
-              <MarkdownEditor placeholder="支持 Markdown，可粘贴或上传图片" />
-            </Suspense>
+            <BlogEditorField key={isNew ? 'new' : `edit-${editId}-${editorKey}`} />
           </Form.Item>
         </Card>
         <Card className={styles.footerCard} loading={loading}>
