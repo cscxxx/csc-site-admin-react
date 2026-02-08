@@ -4,17 +4,20 @@
  * 创建时间：仅新增时传当前时间戳，编辑不传，页面不展示，仅表格展示
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Select, Button, App, Space } from 'antd';
+import { Card, Form, Input, Select, Button, App, Space, Spin } from 'antd';
 import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { ImageUpload } from '@/components/upload';
-import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { getBlog, addBlog, updateBlog } from '../service';
 import { getBlogtypeList } from '@/pages/Blogtype/service';
 import type { BlogtypeItem } from '@/pages/Blogtype/types';
 import styles from './index.module.less';
+
+const MarkdownEditor = lazy(() =>
+  import('@/components/MarkdownEditor').then(m => ({ default: m.MarkdownEditor }))
+);
 
 interface BlogFormValues {
   title: string;
@@ -147,7 +150,9 @@ function BlogEditPage() {
             rules={[{ required: true, message: '请输入正文' }]}
             className={styles.htmlContentItem}
           >
-            <MarkdownEditor placeholder="支持 Markdown，可粘贴或上传图片" />
+            <Suspense fallback={<Spin style={{ padding: 24 }} tip="加载编辑器中…" />}>
+              <MarkdownEditor placeholder="支持 Markdown，可粘贴或上传图片" />
+            </Suspense>
           </Form.Item>
         </Card>
         <Card className={styles.footerCard} loading={loading}>
@@ -172,9 +177,7 @@ function BlogEditPage() {
                 options={categoryOptions}
                 style={{ width: '100%' }}
                 getPopupContainer={
-                  fullscreen
-                    ? () => fullscreenRef.current ?? document.body
-                    : undefined
+                  fullscreen ? () => fullscreenRef.current ?? document.body : undefined
                 }
               />
             </Form.Item>

@@ -17,7 +17,6 @@ import {
   imagePlugin,
   tablePlugin,
   thematicBreakPlugin,
-  markdownShortcutPlugin,
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -104,7 +103,6 @@ function MarkdownEditorInner({
       imagePlugin({ imageUploadHandler: uploadHandler }),
       tablePlugin(),
       thematicBreakPlugin(),
-      markdownShortcutPlugin(),
       toolbarPlugin({
         toolbarContents: () => (
           <>
@@ -136,9 +134,7 @@ function MarkdownEditorInner({
 
   const handleChange = useCallback(
     (markdown: string) => {
-      const html = markdown
-        ? (marked.parse(markdown, { async: false, gfm: true }) as string)
-        : '';
+      const html = markdown ? (marked.parse(markdown, { async: false, gfm: true }) as string) : '';
       lastHtmlRef.current = html;
       onChange(html);
     },
@@ -157,10 +153,7 @@ function MarkdownEditorInner({
     .trim();
 
   return (
-    <div
-      className={['w-full', className].filter(Boolean).join(' ')}
-      style={wrapperStyle}
-    >
+    <div className={['w-full', className].filter(Boolean).join(' ')} style={wrapperStyle}>
       <div className={innerClass}>
         <MDXEditor
           ref={editorRef}
