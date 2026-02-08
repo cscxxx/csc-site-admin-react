@@ -142,6 +142,7 @@ function Login() {
           <p>提示：请输入用户名、密码和验证码进行登录</p>
         </div>
       </Card>
+      <footer className={styles.loginFooter}>鄂ICP备2026005471号</footer>
     </div>
   );
 }

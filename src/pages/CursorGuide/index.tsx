@@ -3,7 +3,13 @@
  */
 
 import { Card, Typography } from 'antd';
-import { ReadOutlined, ToolOutlined, PartitionOutlined } from '@ant-design/icons';
+import {
+  ReadOutlined,
+  ToolOutlined,
+  PartitionOutlined,
+  BookOutlined,
+  CodeOutlined,
+} from '@ant-design/icons';
 import styles from './index.module.less';
 
 const { Title, Paragraph } = Typography;
@@ -85,6 +91,62 @@ function CursorGuide() {
         <Paragraph>
           <strong>总结：</strong>Subagents 用于任务分工与聚焦，适合测试、文档、某一层代码等专项工作。
         </Paragraph>
+      </Card>
+
+      <Card
+        className={styles.sectionCard}
+        title={
+          <span>
+            <BookOutlined className={styles.cardIcon} />
+            本项目的 Rules
+          </span>
+        }
+      >
+        <Paragraph className={styles.subIntro}>
+          以下为当前项目 <code>.cursor/rules/</code> 中的规则文件，AI 会按「始终应用」或「智能应用」加载。
+        </Paragraph>
+        <ul className={styles.docList}>
+          <li>
+            <code>project.mdc</code> — 项目特定规范（技术栈、状态管理、路由、请求、ahooks、代码提交）。<em>始终应用</em>
+          </li>
+          <li>
+            <code>code-style.mdc</code> — 代码风格与命名规范（文件组织、样式、配置抽离 use*）。<em>始终应用</em>
+          </li>
+          <li>
+            <code>react.mdc</code> — React 组件与 Hooks 规范。<em>始终应用</em>
+          </li>
+          <li>
+            <code>typescript.mdc</code> — TypeScript 类型定义规范（禁止 any、import type）。<em>始终应用</em>
+          </li>
+          <li>
+            <code>antd.mdc</code> — Ant Design v6 使用规范（App、表单、Modal 等）。<em>智能应用</em>
+          </li>
+          <li>
+            <code>best-practices.mdc</code> — 最佳实践与禁止事项（错误处理、可访问性、安全）。<em>智能应用</em>
+          </li>
+        </ul>
+      </Card>
+
+      <Card
+        className={styles.sectionCard}
+        title={
+          <span>
+            <CodeOutlined className={styles.cardIcon} />
+            本项目的 Skills
+          </span>
+        }
+      >
+        <Paragraph className={styles.subIntro}>
+          以下为当前项目 <code>.cursor/skills/</code> 中的技能，Agent 会根据描述在相关对话中自动调用，也可通过 <code>/技能名</code> 手动调用。
+        </Paragraph>
+        <ul className={styles.docList}>
+          <li>
+            <strong>commit-code</strong>（<code>.cursor/skills/commit-code/SKILL.md</code>）— 按 Conventional Commits 生成中文、汇总式的 commit message；在提交代码、写 commit、生成提交信息时使用。
+          </li>
+          <li>
+            <strong>develop-page</strong>（<code>.cursor/skills/develop-page/SKILL.md</code>）— 新增/开发页面时的标准流程（目录、组件、样式、路由、侧栏菜单）；在新增页面、加管理页/列表页时使用。
+          </li>
+        </ul>
       </Card>
 
       <Card className={styles.summaryCard} size="small">
