@@ -1,6 +1,6 @@
 /**
  * 侧边栏菜单配置
- * 仪表盘、用户管理、首页标语、设置、Mock 数据、性能监控
+ * 顺序：首页总览 → 核心业务（文章）→ 内容与互动 → 设置与关于 → 帮助与示例 → 开发工具
  */
 
 import { useMemo } from 'react';
@@ -27,14 +27,24 @@ export function useSideMenu(): MenuProps['items'] {
         label: '仪表盘',
       },
       {
-        key: '/users',
-        icon: <UserOutlined />,
-        label: '用户管理',
+        key: 'article',
+        icon: <FolderOutlined />,
+        label: '文章管理',
+        children: [
+          { key: '/blogtype', label: '文章分类' },
+          { key: '/blog', label: '文章列表' },
+          { key: '/blog/edit', label: '新增与编辑文章' },
+        ],
       },
       {
         key: '/banner',
         icon: <FileTextOutlined />,
         label: '首页标语',
+      },
+      {
+        key: '/message',
+        icon: <MessageOutlined />,
+        label: '留言板管理',
       },
       {
         key: '/settings',
@@ -47,24 +57,14 @@ export function useSideMenu(): MenuProps['items'] {
         label: '关于',
       },
       {
-        key: '/message',
-        icon: <MessageOutlined />,
-        label: '留言板管理',
+        key: '/cursor-guide',
+        icon: <UserOutlined />,
+        label: 'Cursor 指南',
       },
       {
         key: '/project',
         icon: <ProjectOutlined />,
         label: '示例项目',
-      },
-      {
-        key: 'article',
-        icon: <FolderOutlined />,
-        label: '文章管理',
-        children: [
-          { key: '/blogtype', label: '文章分类' },
-          { key: '/blog', label: '文章列表' },
-          { key: '/blog/edit', label: '新增与编辑文章' },
-        ],
       },
       {
         key: '/mock',

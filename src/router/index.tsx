@@ -24,7 +24,7 @@ import LazyRoute, { LoadingFallback } from '@/components/LazyRoute';
 // 路由懒加载：使用 React.lazy 动态导入页面组件
 const Login = lazy(() => import('@/pages/Login'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const Users = lazy(() => import('@/pages/Users'));
+const CursorGuide = lazy(() => import('@/pages/CursorGuide'));
 const Settings = lazy(() => import('@/pages/Settings'));
 const Mock = lazy(() => import('@/pages/Mock'));
 const Performance = lazy(() => import('@/pages/Performance'));
@@ -67,7 +67,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'users',
-        element: <LazyRoute component={Users} />,
+        element: <Navigate to="/cursor-guide" replace />,
+      },
+      {
+        path: 'cursor-guide',
+        element: <LazyRoute component={CursorGuide} />,
       },
       {
         path: 'admin',

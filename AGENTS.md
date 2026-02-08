@@ -18,6 +18,8 @@
 - **API 规范**: `.cursor/context/api.md` - API 接口规范和请求工具使用指南
 - **代码模式**: `.cursor/patterns/` - 创建页面、服务、Store 的标准模式
 - **代码示例**: `.cursor/examples/` - 完整的代码示例参考
+- **开发页面 Skill**: `.cursor/skills/develop-page/SKILL.md` - 新增/开发页面时按此 Skill 执行，与 patterns 配合使用
+- **提交代码 Skill**: `.cursor/skills/commit-code/SKILL.md` - 每次提交代码时按 Conventional Commits 生成 commit message
 
 ### 关键文件
 

@@ -1,0 +1,48 @@
+@import '@/styles/variables.less';
+
+.pageContainer {
+  width: 100%;
+  min-width: 0;
+  padding: @spacing-md;
+  box-sizing: border-box;
+}
+
+.pageTitle {
+  margin-bottom: @spacing-sm !important;
+  font-size: @font-size-xl;
+  font-weight: bold;
+}
+
+.intro {
+  margin-bottom: @spacing-lg;
+  color: @text-color-secondary;
+}
+
+.sectionCard {
+  margin-bottom: @spacing-md;
+
+  :global(.ant-card-head-title) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.cardIcon {
+  margin-right: @spacing-sm;
+  color: @primary-color;
+}
+
+.summaryCard {
+  margin-top: @spacing-lg;
+  background-color: @bg-layout;
+}
+
+.summaryList {
+  margin: 0;
+  padding-left: 1.25em;
+  color: @text-color-secondary;
+
+  li {
+    margin-bottom: @spacing-xs;
+  }
+}
