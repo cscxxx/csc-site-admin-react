@@ -18,6 +18,7 @@ import {
   tablePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
+  markdownShortcutPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
@@ -32,6 +33,8 @@ import {
   type MDXEditorMethods,
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
+import 'github-markdown-css/github-markdown-light.css';
+import './markdown-body-override.css';
 import { marked } from 'marked';
 import { uploadImage } from '@/components/upload/service';
 import { htmlToMarkdown } from './html-to-markdown';
@@ -65,10 +68,13 @@ const CONTENTEDITABLE_CLASS =
     String(EDITOR_CONTENT_MIN_H)
   );
 
+/**
+ * 富文本编辑器内部实现：HTML 受控、Markdown 编辑、图片上传，带 Markdown 快捷输入
+ */
 function MarkdownEditorInner({
   value = '',
   onChange = NOOP,
-  placeholder,
+  placeholder = '支持 Markdown，可粘贴或上传图片',
   disabled = false,
   className,
   height = MIN_HEIGHT_CLASS,
@@ -104,6 +110,7 @@ function MarkdownEditorInner({
       imagePlugin({ imageUploadHandler: uploadHandler }),
       tablePlugin(),
       thematicBreakPlugin(),
+      markdownShortcutPlugin(),
       toolbarPlugin({
         toolbarContents: () => (
           <>
@@ -128,24 +135,33 @@ function MarkdownEditorInner({
 
   const setRef = useCallback((r: MDXEditorMethods | null) => {
     editorRef.current = r;
-    if (r) setEditorReady(true);
+    setEditorReady(Boolean(r));
   }, []);
+
+  const valueForConvert = value ?? '';
+  const initialMarkdown = useMemo(() => htmlToMarkdown(valueForConvert), [valueForConvert]);
 
   useEffect(() => {
     if (!editorRef.current) return;
     if (lastHtmlRef.current !== undefined && value === lastHtmlRef.current) return;
     lastHtmlRef.current = value;
     try {
-      const markdown = htmlToMarkdown(value ?? '');
-      editorRef.current.setMarkdown(markdown);
+      editorRef.current.setMarkdown(initialMarkdown);
     } catch (err) {
       console.error('[MarkdownEditor] setMarkdown 失败:', err);
     }
-  }, [value, editorReady]);
+  }, [value, editorReady, initialMarkdown]);
 
   const handleChange = useCallback(
     (markdown: string) => {
-      const html = markdown ? (marked.parse(markdown, { async: false, gfm: true }) as string) : '';
+      let html = '';
+      if (markdown) {
+        try {
+          html = marked.parse(markdown, { async: false, gfm: true }) as string;
+        } catch (err) {
+          console.error('[MarkdownEditor] markdown 转 HTML 失败:', err);
+        }
+      }
       lastHtmlRef.current = html;
       onChange(html);
     },
@@ -168,12 +184,13 @@ function MarkdownEditorInner({
       <div className={innerClass}>
         <MDXEditor
           ref={setRef}
-          markdown={htmlToMarkdown(value ?? '')}
+          markdown={initialMarkdown}
           onChange={handleChange}
           plugins={plugins}
           placeholder={placeholder}
           readOnly={disabled}
           className="w-full"
+          contentEditableClassName="markdown-body min-h-full focus:outline-none"
         />
       </div>
     </div>

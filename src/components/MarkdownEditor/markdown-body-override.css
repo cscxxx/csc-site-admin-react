@@ -1,0 +1,6 @@
+/**
+ * 仅覆盖 github-markdown-css 在编辑场景下的限制：内容区不限制最大宽度
+ */
+.mdxeditor-root-contenteditable.markdown-body {
+  max-width: none;
+}
