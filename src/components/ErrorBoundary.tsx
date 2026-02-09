@@ -1,8 +1,9 @@
 import { Component, type ReactNode } from 'react';
 import { Result, Button, Space, Collapse } from 'antd';
-import { HomeOutlined, ReloadOutlined, BugOutlined } from '@ant-design/icons';
+import { HomeOutlined, ReloadOutlined, BugOutlined, WifiOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { handleError } from '@/utils/error/logger';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import styles from './ErrorBoundary.module.less';
 
 interface ErrorBoundaryProps {
@@ -90,6 +91,15 @@ interface ErrorFallbackProps {
 
 function ErrorFallback({ error, errorInfo, onReset }: ErrorFallbackProps) {
   const navigate = useNavigate();
+  const isOnline = useNetworkStatus();
+
+  // 判断是否为网络相关错误
+  const isNetworkError =
+    !isOnline ||
+    error?.message?.includes('fetch') ||
+    error?.message?.includes('network') ||
+    error?.message?.includes('Network') ||
+    error?.name === 'TypeError';
 
   const handleGoHome = () => {
     onReset();
@@ -103,9 +113,14 @@ function ErrorFallback({ error, errorInfo, onReset }: ErrorFallbackProps) {
   return (
     <div className={styles.errorBoundary}>
       <Result
-        status="error"
-        title="页面出现错误"
-        subTitle="抱歉，页面遇到了一个错误。您可以尝试刷新页面或返回首页。"
+        status={isNetworkError ? 'warning' : 'error'}
+        icon={isNetworkError ? <WifiOutlined /> : undefined}
+        title={isNetworkError ? '网络连接异常' : '页面出现错误'}
+        subTitle={
+          isNetworkError
+            ? '当前网络连接异常，请检查您的网络设置后重试。'
+            : '抱歉，页面遇到了一个错误。您可以尝试刷新页面或返回首页。'
+        }
         extra={
           <Space>
             <Button type="primary" icon={<ReloadOutlined />} onClick={handleReload}>
