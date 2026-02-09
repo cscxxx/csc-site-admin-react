@@ -22,6 +22,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'csc-site-admin-react',
     target: 'es2022',
     sourcemap: false,
     reportCompressedSize: true,

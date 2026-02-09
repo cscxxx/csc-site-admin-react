@@ -10,7 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist.zip
-dist-ssr
+csc-site-admin-react
+csc-site-admin-react.zip
 *.local
 
 .idea
