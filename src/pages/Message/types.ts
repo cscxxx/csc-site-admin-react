@@ -17,7 +17,6 @@ export interface MessageListParams {
   page: number;
   limit: number;
   keyword?: string;
-  blogid?: number;
 }
 
 /** 留言列表接口返回的 data 结构 */

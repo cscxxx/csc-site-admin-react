@@ -1,108 +1,139 @@
+/**
+ * 首页标语（Banner）管理
+ * 接口：GET 列表、POST 新增、PUT /:id 更新、DELETE /:id 删除
+ */
+
 import { useState, useEffect, useCallback } from 'react';
-import { Table, App } from 'antd';
-import { getBannerList, updateBannerList } from './service';
-import { useColumns } from './use-columns.tsx';
+import { Table, Button, App } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { getBannerList, addBanner, updateBanner, deleteBanner } from './service';
+import { useColumns } from './use-columns';
 import EditModal from './useEditModal';
 import type { BannerItem, BannerSubmitItem } from '@/types';
 import type { BannerFormData } from './types';
 import styles from './index.module.less';
 
 function Banner() {
-  const { message } = App.useApp();
-  const [bannerList, setBannerList] = useState<BannerItem[]>([]);
+  const { message, modal } = App.useApp();
+  const [list, setList] = useState<BannerItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<BannerItem | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 加载 Banner 列表
-  const loadBannerList = useCallback(async () => {
+  const loadList = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getBannerList();
-      setBannerList(data);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : '获取 Banner 列表失败';
-      message.error(errorMessage);
-      console.error('Failed to load banner list:', error);
+      setList(data);
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : '获取列表失败');
     } finally {
       setLoading(false);
     }
   }, [message]);
 
-  // 组件挂载时加载数据
   useEffect(() => {
-    loadBannerList();
-  }, [loadBannerList]);
+    loadList();
+  }, [loadList]);
 
-  // 打开编辑弹窗
-  const handleEdit = (record: BannerItem) => {
-    setEditingItem(record);
-    setModalVisible(true);
+  const handleAdd = () => {
+    setEditingItem(null);
+    setModalOpen(true);
   };
 
-  // 关闭弹窗
+  const handleEdit = (record: BannerItem) => {
+    setEditingItem(record);
+    setModalOpen(true);
+  };
+
   const handleCancel = () => {
-    setModalVisible(false);
+    setModalOpen(false);
     setEditingItem(null);
   };
 
-  // 提交表单
   const handleSubmit = async (values: BannerFormData) => {
-    if (!editingItem) {
-      return;
-    }
-
     try {
       setSubmitting(true);
-
-      // 构建提交数据：更新对应项，其他项保持不变
-      const submitData: BannerSubmitItem[] = bannerList.map(item => {
-        if (item.id === editingItem.id) {
-          return {
-            midImg: values.midImg,
-            bigImg: values.bigImg,
-            title: values.title,
-            description: values.description,
-          };
-        }
-        return {
-          midImg: item.midImg,
-          bigImg: item.bigImg,
-          title: item.title,
-          description: item.description,
-        };
-      });
-
-      await updateBannerList(submitData);
-      message.success('更新成功！');
+      const body: BannerSubmitItem = {
+        midImg: values.midImg,
+        bigImg: values.bigImg,
+        title: values.title,
+        description: values.description,
+        order: values.order ?? 0,
+        isShow: values.isShow ?? true,
+      };
+      if (editingItem) {
+        await updateBanner(editingItem.id, body);
+        message.success('更新成功');
+      } else {
+        await addBanner(body);
+        message.success('新增成功');
+      }
+      await loadList();
       handleCancel();
-      // 重新加载列表
-      await loadBannerList();
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : '更新失败';
-      message.error(errorMessage);
-      console.error('Failed to update banner:', error);
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : '操作失败');
+      throw err;
     } finally {
       setSubmitting(false);
     }
   };
 
-  // 获取表格列定义
-  const columns = useColumns({ onEdit: handleEdit });
+  const handleDelete = (record: BannerItem) => {
+    modal.confirm({
+      title: '确认删除',
+      content: `确定要删除「${record.title}」吗？`,
+      okText: '确认',
+      cancelText: '取消',
+      okType: 'danger',
+      onOk: async () => {
+        try {
+          await deleteBanner(record.id);
+          message.success('删除成功');
+          await loadList();
+        } catch (err) {
+          message.error(err instanceof Error ? err.message : '删除失败');
+        }
+      },
+    });
+  };
+
+  const handleShowChange = async (record: BannerItem, isShow: boolean) => {
+    try {
+      await updateBanner(record.id, { isShow });
+      message.success(isShow ? '已设为展示' : '已设为隐藏');
+      setList(prev =>
+        prev.map(item => (item.id === record.id ? { ...item, isShow } : item))
+      );
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : '操作失败');
+    }
+  };
+
+  const columns = useColumns({
+    onEdit: handleEdit,
+    onDelete: handleDelete,
+    onShowChange: handleShowChange,
+  });
 
   return (
     <div className={styles.pageContainer}>
-      <h1 className={styles.pageTitle}>首页标语管理</h1>
-      <Table
+      <div className={styles.toolbar}>
+        <h1 className={styles.pageTitle}>首页标语管理</h1>
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+          新增
+        </Button>
+      </div>
+      <Table<BannerItem>
         columns={columns}
-        dataSource={bannerList}
-        loading={loading}
+        dataSource={list}
         rowKey="id"
-        scroll={{ x: 1000 }}
+        loading={loading}
+        scroll={{ x: 900 }}
       />
       <EditModal
-        open={modalVisible}
+        open={modalOpen}
         editingItem={editingItem}
         submitting={submitting}
         onCancel={handleCancel}

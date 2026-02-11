@@ -4,8 +4,17 @@
   padding: @spacing-md;
 }
 
-.pageTitle {
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: @spacing-md;
+  flex-wrap: wrap;
+  gap: @spacing-sm;
+}
+
+.pageTitle {
+  margin: 0;
   font-size: @font-size-xl;
   font-weight: bold;
 }
@@ -76,4 +85,11 @@
   display: flex;
   justify-content: flex-end;
   gap: @spacing-sm;
+}
+
+.actionColumn {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }

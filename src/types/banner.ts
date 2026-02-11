@@ -3,34 +3,36 @@
  */
 
 /**
- * Banner 数据项
+ * Banner 数据项（GET 列表不返回 isShow）
  */
 export interface BannerItem {
-  /** Banner ID */
   id: number;
-  /** 中等尺寸图片地址 */
   midImg: string;
-  /** 大尺寸图片地址 */
   bigImg: string;
-  /** 标题 */
   title: string;
-  /** 描述 */
   description: string;
+  /** 排序，数值越小越靠前 */
+  order?: number;
+  /** 仅编辑时使用，列表接口可能不返回 */
+  isShow?: boolean;
 }
 
 /**
- * Banner 提交数据项（不包含 id）
+ * 新增 Banner 请求体（POST）
  */
 export interface BannerSubmitItem {
-  /** 中等尺寸图片地址 */
   midImg: string;
-  /** 大尺寸图片地址 */
   bigImg: string;
-  /** 标题 */
   title: string;
-  /** 描述 */
   description: string;
+  order?: number;
+  isShow?: boolean;
 }
+
+/**
+ * 更新 Banner 请求体（PUT，部分字段）
+ */
+export type BannerUpdateItem = Partial<BannerSubmitItem>;
 
 /**
  * 获取 Banner 列表响应

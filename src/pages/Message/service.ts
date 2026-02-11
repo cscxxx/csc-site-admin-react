@@ -9,7 +9,7 @@ import type { MessageListParams, MessageListData } from './types';
 
 /**
  * 获取留言列表
- * @param params page、limit、keyword、blogid
+ * @param params page、limit、keyword
  */
 export async function getMessageList(
   params: MessageListParams
@@ -19,7 +19,6 @@ export async function getMessageList(
       page: params.page,
       limit: params.limit,
       ...(params.keyword ? { keyword: params.keyword } : {}),
-      ...(params.blogid != null ? { blogid: params.blogid } : {}),
     },
   });
   const res = await promise;

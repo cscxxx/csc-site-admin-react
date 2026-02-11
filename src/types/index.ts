@@ -39,6 +39,7 @@ export type { MockResponse, MockConfigOptions, MockConfig } from './mock';
 export type {
   BannerItem,
   BannerSubmitItem,
+  BannerUpdateItem,
   BannerListResponse,
 } from './banner';
 

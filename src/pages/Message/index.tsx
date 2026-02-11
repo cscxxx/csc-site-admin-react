@@ -17,7 +17,6 @@ function Message() {
   const page = Number(searchParams.get('page')) || DEFAULT_PAGE;
   const limit = Number(searchParams.get('limit')) || DEFAULT_LIMIT;
   const keyword = searchParams.get('keyword') ?? '';
-  const blogid = Number(searchParams.get('blogid')) || 1;
 
   const [list, setList] = useState<MessageItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -27,7 +26,7 @@ function Message() {
   const fetchList = useCallback(async () => {
     try {
       setLoading(true);
-      const params: MessageListParams = { page, limit, blogid };
+      const params: MessageListParams = { page, limit };
       if (keyword.trim()) params.keyword = keyword.trim();
       const data = await getMessageList(params);
       setList(data.rows);
@@ -37,7 +36,7 @@ function Message() {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, keyword, blogid, message]);
+  }, [page, limit, keyword, message]);
 
   useEffect(() => {
     fetchList();

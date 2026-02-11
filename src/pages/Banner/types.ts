@@ -4,40 +4,30 @@
 
 import type { BannerItem } from '@/types';
 
-/**
- * Banner 编辑表单数据
- */
+/** 表单字段（新增/编辑共用） */
 export interface BannerFormData {
-  /** 中等尺寸图片地址 */
   midImg: string;
-  /** 大尺寸图片地址 */
   bigImg: string;
-  /** 标题 */
   title: string;
-  /** 描述 */
   description: string;
+  order?: number;
+  isShow?: boolean;
 }
 
-/**
- * 表格列定义 Props
- */
+/** 表格列 Hook 入参 */
 export interface BannerColumnsProps {
-  /** 编辑处理函数 */
   onEdit: (record: BannerItem) => void;
+  onDelete: (record: BannerItem) => void;
+  /** 切换「是否展示」时调用，由父组件请求 PUT 并刷新列表 */
+  onShowChange: (record: BannerItem, isShow: boolean) => void | Promise<void>;
 }
 
-/**
- * EditModal Props
- */
+/** 新增/编辑弹窗 Props */
 export interface EditModalProps {
-  /** 是否显示弹窗 */
   open: boolean;
-  /** 正在编辑的 Banner 项 */
+  /** null 表示新增，否则为编辑 */
   editingItem: BannerItem | null;
-  /** 是否正在提交 */
   submitting: boolean;
-  /** 关闭弹窗处理函数 */
   onCancel: () => void;
-  /** 提交表单处理函数 */
   onSubmit: (values: BannerFormData) => Promise<void>;
 }
