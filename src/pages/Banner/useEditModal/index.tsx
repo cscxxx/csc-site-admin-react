@@ -58,7 +58,7 @@ function EditModal(props: EditModalProps) {
       confirmLoading={submitting}
       centered
       width={640}
-      destroyOnClose
+      destroyOnHidden
       styles={{ body: { maxHeight: '80vh', overflowY: 'auto', overflowX: 'hidden' } }}
     >
       <Form form={form} layout="vertical" className={styles.modalForm}>
@@ -67,7 +67,7 @@ function EditModal(props: EditModalProps) {
             <Form.Item
               label="中等尺寸图片"
               name="midImg"
-              rules={[{ required: true, message: '请上传中等图片' }]}
+              rules={[{ required: false, message: '请上传中等图片' }]}
               getValueFromEvent={(url: string | null) => url ?? ''}
             >
               <ImageUpload placeholder="点击或拖拽上传" />

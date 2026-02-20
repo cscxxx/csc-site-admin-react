@@ -129,7 +129,12 @@ function Login() {
 
           <Form.Item>
             <Space orientation="vertical" style={{ width: '100%' }}>
-              <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 0 }}>
+              <Form.Item
+                name="remember"
+                valuePropName="checked"
+                initialValue={true}
+                style={{ marginBottom: 0 }}
+              >
                 <Checkbox>记住我（7天）</Checkbox>
               </Form.Item>
               <Button type="primary" htmlType="submit" block loading={loading}>

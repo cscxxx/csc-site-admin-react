@@ -3,10 +3,11 @@
  */
 
 import { useMemo } from 'react';
-import { Button, Image } from 'antd';
+import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
+import { DisplayImage } from '@/components/image';
 import type { MessageItem } from './types';
 
 export interface MessageColumnsProps {
@@ -31,13 +32,12 @@ export function useMessageColumns(props: MessageColumnsProps): ColumnsType<Messa
         width: 72,
         render: (avatar: string) =>
           avatar ? (
-            <Image
-              src={avatar}
+            <DisplayImage
+              url={avatar}
               alt="头像"
               width={40}
               height={40}
-              style={{ objectFit: 'cover', borderRadius: '50%' }}
-              preview
+              style={{ borderRadius: '50%' }}
             />
           ) : (
             '-'

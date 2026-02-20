@@ -12,6 +12,22 @@ declare module '*.module.less' {
   export default classes;
 }
 
+/** libheif-js (wasm-bundle) 无官方类型，仅声明使用到的 API */
+declare module 'libheif-js/wasm-bundle' {
+  interface HeifImage {
+    get_width(): number;
+    get_height(): number;
+    display(imageData: ImageData, callback: (displayData: ImageData | null) => void): void;
+  }
+  interface HeifDecoder {
+    decode(buffer: Uint8Array): HeifImage[];
+  }
+  const libheif: {
+    HeifDecoder: new () => HeifDecoder;
+  };
+  export default libheif;
+}
+
 declare module 'turndown' {
   interface TurndownOptions {
     codeBlockStyle?: 'indented' | 'fenced';

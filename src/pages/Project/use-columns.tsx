@@ -4,9 +4,10 @@
  */
 
 import { useMemo } from 'react';
-import { Button, Image, Space, Tooltip } from 'antd';
+import { Button, Space, Tooltip } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { DisplayImage } from '@/components/image';
 import type { ProjectItem } from './types';
 import type { ProjectColumnsProps } from './types';
 
@@ -50,14 +51,7 @@ export function useProjectColumns(props: ProjectColumnsProps): ColumnsType<Proje
         width: 80,
         render: (thumb: string) =>
           thumb ? (
-            <Image
-              src={thumb}
-              alt="缩略图"
-              width={48}
-              height={48}
-              style={{ objectFit: 'cover', borderRadius: 4 }}
-              preview
-            />
+            <DisplayImage url={thumb} alt="缩略图" width={48} height={48} />
           ) : (
             '-'
           ),

@@ -3,10 +3,11 @@
  */
 
 import { useMemo } from 'react';
-import { Button, Image, Space, Spin, Switch, Tooltip } from 'antd';
+import { Button, Space, Switch, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import type { BannerItem } from '@/types';
+import { DisplayImage } from '@/components/image';
 import type { BannerColumnsProps } from './types';
 import styles from './index.module.less';
 
@@ -32,48 +33,14 @@ export function useColumns(props: BannerColumnsProps): ColumnsType<BannerItem> {
         dataIndex: 'midImg',
         key: 'midImg',
         width: 150,
-        render: (url: string) => (
-          <div className={styles.imageWrapper}>
-            <Image
-              src={url}
-              alt="中等图片"
-              width={100}
-              height={60}
-              style={{ objectFit: 'cover', borderRadius: 4 }}
-              preview
-              loading="lazy"
-              placeholder={
-                <div className={styles.imagePlaceholder}>
-                  <Spin size="small" />
-                </div>
-              }
-            />
-          </div>
-        ),
+        render: (url: string) => <DisplayImage url={url} alt="中等图片" width={100} height={60} />,
       },
       {
         title: '大图',
         dataIndex: 'bigImg',
         key: 'bigImg',
         width: 150,
-        render: (url: string) => (
-          <div className={styles.imageWrapper}>
-            <Image
-              src={url}
-              alt="大图"
-              width={100}
-              height={60}
-              style={{ objectFit: 'cover', borderRadius: 4 }}
-              preview
-              loading="lazy"
-              placeholder={
-                <div className={styles.imagePlaceholder}>
-                  <Spin size="small" />
-                </div>
-              }
-            />
-          </div>
-        ),
+        render: (url: string) => <DisplayImage url={url} alt="大图" width={100} height={60} />,
       },
       {
         title: '标题',
