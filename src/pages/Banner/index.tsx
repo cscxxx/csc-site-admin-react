@@ -103,9 +103,7 @@ function Banner() {
     try {
       await updateBanner(record.id, { isShow });
       message.success(isShow ? '已设为展示' : '已设为隐藏');
-      setList(prev =>
-        prev.map(item => (item.id === record.id ? { ...item, isShow } : item))
-      );
+      setList(prev => prev.map(item => (item.id === record.id ? { ...item, isShow } : item)));
     } catch (err) {
       message.error(err instanceof Error ? err.message : '操作失败');
     }
@@ -130,7 +128,7 @@ function Banner() {
         dataSource={list}
         rowKey="id"
         loading={loading}
-        scroll={{ x: 900 }}
+        // scroll={{ x: 900 }}
       />
       <EditModal
         open={modalOpen}

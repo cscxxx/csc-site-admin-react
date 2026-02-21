@@ -74,6 +74,11 @@
   background-color: @bg-layout;
   border-right: 1px solid @border-color-split;
 
+  /* 与 Ant Design Sider 折叠动画同步，避免布局计算不同步造成抖动 */
+  :global(.ant-layout-sider) {
+    transition: width 0.2s ease, min-width 0.2s ease !important;
+  }
+
   :global(.ant-layout-sider-children) {
     display: flex;
     flex-direction: column;
@@ -122,6 +127,8 @@
   flex: 1;
   min-width: 0;
   overflow-y: auto;
+  /* 预留滚动条空间，避免折叠/展开时因滚动条显隐导致页面抖动 */
+  scrollbar-gutter: stable;
   margin: @spacing-sm;
   padding: @spacing-sm;
   min-height: @content-min-height;

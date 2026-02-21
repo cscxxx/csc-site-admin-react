@@ -61,8 +61,7 @@ export function useMessageColumns(props: MessageColumnsProps): ColumnsType<Messa
         dataIndex: 'createDate',
         key: 'createDate',
         width: 180,
-        render: (createDate: string) =>
-          dayjs(Number(createDate)).format('YYYY-MM-DD HH:mm:ss'),
+        render: (createDate: string) => dayjs(Number(createDate)).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '博客ID',
@@ -75,14 +74,9 @@ export function useMessageColumns(props: MessageColumnsProps): ColumnsType<Messa
         key: 'action',
         width: 100,
         align: 'center',
-        fixed: 'right',
+        // fixed: 'right',
         render: (_, record) => (
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => onDelete(record)}
-          >
+          <Button type="link" danger icon={<DeleteOutlined />} onClick={() => onDelete(record)}>
             删除
           </Button>
         ),

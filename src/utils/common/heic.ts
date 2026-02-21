@@ -74,7 +74,7 @@ async function decodeHeicToJpegFile(file: File): Promise<File> {
         resolve(new File([blob], name, { type: 'image/jpeg' }));
       },
       'image/jpeg',
-      0.92
+      1
     );
   });
 }

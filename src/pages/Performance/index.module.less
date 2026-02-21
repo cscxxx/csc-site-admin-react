@@ -2,12 +2,19 @@
 
 .pageContainer {
   padding: @spacing-md;
+  min-width: 0;
+
+  @media (max-width: 576px) {
+    padding: @spacing-sm;
+  }
 }
 
 .pageHeader {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: @spacing-sm;
   margin-bottom: @spacing-md;
 }
 
@@ -15,4 +22,37 @@
   margin: 0;
   font-size: @font-size-xl;
   font-weight: bold;
+
+  @media (max-width: 576px) {
+    font-size: @font-size-lg;
+  }
+}
+
+.headerActions {
+  @media (max-width: 576px) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+.metricsCard {
+  margin-bottom: 16px;
+
+  @media (max-width: 576px) {
+    margin-bottom: @spacing-sm;
+    :global(.ant-card-body) {
+      padding: @spacing-sm;
+    }
+  }
+}
+
+.historyCard {
+  overflow: hidden;
+
+  @media (max-width: 576px) {
+    :global(.ant-card-body) {
+      padding: @spacing-sm;
+      overflow-x: auto;
+    }
+  }
 }

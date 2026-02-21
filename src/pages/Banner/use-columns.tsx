@@ -80,7 +80,7 @@ export function useColumns(props: BannerColumnsProps): ColumnsType<BannerItem> {
         title: '操作',
         key: 'action',
         width: 200,
-        fixed: 'right',
+        // fixed: 'right',
         render: (_, record) => (
           <Space className={styles.actionColumn} size="small">
             <Switch

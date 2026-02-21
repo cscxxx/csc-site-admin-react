@@ -192,7 +192,7 @@ function Performance() {
     <div className={styles.pageContainer}>
       <div className={styles.pageHeader}>
         <h1 className={styles.pageTitle}>性能监控</h1>
-        <Space>
+        <Space wrap className={styles.headerActions}>
           <Button icon={<ReloadOutlined />} onClick={handleRefresh}>
             刷新数据
           </Button>
@@ -202,17 +202,18 @@ function Performance() {
         </Space>
       </div>
 
-      <Card title="Core Web Vitals" style={{ marginBottom: 16 }}>
+      <Card title="Core Web Vitals" className={styles.metricsCard}>
         <Row gutter={[16, 16]}>{getMetricCards()}</Row>
       </Card>
 
-      <Card title="历史记录">
+      <Card title="历史记录" className={styles.historyCard}>
         <Table
           columns={historyColumns}
           dataSource={history}
           rowKey="id"
           pagination={{ pageSize: 10 }}
           locale={{ emptyText: '暂无历史记录' }}
+          scroll={{ x: 760 }}
         />
       </Card>
     </div>

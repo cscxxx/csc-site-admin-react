@@ -74,6 +74,9 @@ function AppLayout() {
   const [userOpenKeys, setUserOpenKeys] = useState<string[]>([]);
   const openKeys = pathnameOpenKeys.length > 0 ? pathnameOpenKeys : userOpenKeys;
 
+  /** 侧栏折叠状态，默认折叠 */
+  const [collapsed, setCollapsed] = useState(true);
+
   // 头部下拉：当前在个人中心/设置页时高亮对应菜单项
   const headerSelectedKeys =
     location.pathname === '/admin'
@@ -116,18 +119,29 @@ function AppLayout() {
         </Dropdown>
       </Header>
       <div className={styles.bodyWrap}>
-        <Sider width={200} className={styles.sider}>
+        <Sider
+          width={200}
+          collapsedWidth={80}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          className={styles.sider}
+        >
           <div className={styles.siderInner}>
             <Menu
               mode="inline"
+              inlineCollapsed={collapsed}
               selectedKeys={selectedKeys}
               openKeys={openKeys}
               onOpenChange={setUserOpenKeys}
               items={menuItems}
               onClick={handleMenuClick}
+              triggerSubMenuAction="click"
               className={styles.menu}
             />
-            <Footer className={styles.footer}>{setting?.icp ?? 'Footer © 2026 CSC Site'}</Footer>
+            {!collapsed && (
+              <Footer className={styles.footer}>{setting?.icp ?? 'Footer © 2026 CSC Site'}</Footer>
+            )}
           </div>
         </Sider>
         <Content className={styles.content}>
