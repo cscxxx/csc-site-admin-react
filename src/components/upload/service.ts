@@ -9,6 +9,9 @@ import request from '@/utils/request';
 
 const UPLOAD_URL = '/api/upload';
 
+/** 上传请求超时时间（毫秒），大文件或 HEIC 转码后上传需更长时间 */
+const UPLOAD_TIMEOUT = 120000;
+
 /**
  * 上传单张图片
  * @param file 文件对象
@@ -18,7 +21,9 @@ export async function uploadImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
 
-  const { promise } = request.post<ApiResponse<string>>(UPLOAD_URL, formData);
+  const { promise } = request.post<ApiResponse<string>>(UPLOAD_URL, formData, {
+    timeout: UPLOAD_TIMEOUT,
+  });
 
   const response = await promise;
   const body = response.data as UploadApiResponse;

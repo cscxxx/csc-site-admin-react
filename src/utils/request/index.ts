@@ -247,9 +247,12 @@ class Request {
         const err =
           error instanceof Error ? error : new Error(error ? String(error) : 'Unknown error');
 
-        // 如果是取消请求，特殊处理
+        // 取消请求时用新 Error 包装，避免给 DOMException 的只读 message 赋值导致部署环境报错
         if (err.name === 'AbortError') {
-          err.message = 'Request cancelled';
+          const cancelErr = new Error('Request cancelled');
+          (cancelErr as Error & { cause?: unknown }).cause = err;
+          await applyErrorInterceptors(cancelErr, this.interceptors);
+          throw cancelErr;
         }
 
         // 应用错误拦截器
